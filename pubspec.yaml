@@ -1,5 +1,5 @@
 name: hackerearth_mtn_bj_2022
-description: hackerearth mtn bj 2022
+description: Hackerearth mtn bj 2022
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -34,6 +34,11 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  firebase_core: ^1.22.0
+  firebase_auth: ^3.8.0
+  cloud_firestore: ^3.4.7
+  dio: ^4.0.6
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:

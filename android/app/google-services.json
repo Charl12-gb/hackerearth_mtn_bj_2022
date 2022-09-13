@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1077526061292",
+    "project_id": "hackerearth-mtn-bj-2022",
+    "storage_bucket": "hackerearth-mtn-bj-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1077526061292:android:d2b53a00b0504069bf05c9",
+        "android_client_info": {
+          "package_name": "com.corel.hackerearth_mtn_bj_2022"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1077526061292-tvq1pmcg0k9dd3dovcivcldo0godpegv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQdR4C_iJ_n365SaV7rSYsoqQ1q5PhBAY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1077526061292-tvq1pmcg0k9dd3dovcivcldo0godpegv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
