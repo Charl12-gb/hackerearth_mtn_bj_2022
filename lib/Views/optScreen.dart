@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/components/components.dart';
-import 'package:hackerearth_mtn_bj_2022/Views/home.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
+import 'package:uiblock/uiblock.dart';
 
-class OPTScreen extends StatelessWidget {
-  const OPTScreen({Key? key}) : super(key: key);
+import '../controllers/firebase_core.dart';
+import 'home.dart';
+
+class OPTScreen extends StatefulWidget {
+  const OPTScreen({Key? key, this.phoneNumber = "", this.verificationId = "", this.onVerified}) : super(key: key);
   static String name = "/opt";
+  final String phoneNumber;
+  final String verificationId;
+  final Function()? onVerified;
+
+  @override
+  State<OPTScreen> createState() => _OPTScreenState();
+}
+
+class _OPTScreenState extends State<OPTScreen> {
+  bool _isResendAgain = false;
+  bool _isVerified = false;
+  bool _isLoading = false;
+  String _code = '';
+  final int _start = 60;
 
   @override
   Widget build(BuildContext context) {
@@ -15,8 +33,8 @@ class OPTScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Column(
             children: [
-              Spacer(flex: 4,),
-              Text(
+              const Spacer(flex: 4,),
+              const Text(
                 "Saisissez le code de \n confirmation",
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -24,152 +42,60 @@ class OPTScreen extends StatelessWidget {
                     color: AppColor.textColor1,
                     fontSize: 22),
               ),
-              Text(
+              const Text(
                 "Entrez le code à 5 chiffre que nous avons envoyé à",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppColor.textColor2),
               ),
-              Text(
-                "+229 ** ** 55 64",
+              Text(widget.phoneNumber.replaceRange(6, widget.phoneNumber.length, "********"),
                 textAlign: TextAlign.center,
               ),
-              pinForm(),
-              Spacer(flex: 1,),
-
+              VerificationCode(
+                length: 6,
+                textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                keyboardType: TextInputType.number,
+                onCompleted: (value) {
+                  setState(() {
+                    _code = value;
+                  });
+                },
+                onEditing: (value) {},
+              ),
               TweenAnimationBuilder(
-                tween: Tween(begin: 30.0 , end: 0), 
-                duration: const Duration(seconds: 30), 
+                tween: Tween(begin: 30.0 , end: 0),
+                duration: const Duration(seconds: 30),
                 builder: (context, sec, child) => Text("En attente de confirmation 00 : ${ num.parse(sec.toString()).toInt() }") ,
               ),
-              
-              Spacer(flex: 1,),
-              appButton(onPressed: () {
-                Navigator.pushNamed(context, Home.name);
-              } , text: "Confirmer" , backgroundColor: AppColor.primaryColor),
-              Spacer(flex: 5,),
+
+              const Spacer(flex: 1,),
+              appButton(
+                onPressed: _code.length < 6 ? () => {} : () { verify(); },
+                text: "Confirmer" , backgroundColor: AppColor.primaryColor,
+              ),
+              const Spacer(flex: 5,),
             ],
           ),
         ),
       ),
     );
   }
-}
 
-class pinForm extends StatefulWidget {
-  const pinForm({
-    Key? key,
-  }) : super(key: key);
+  void verify() async {
+    UIBlock.block(context);
 
-  @override
-  State<pinForm> createState() => _pinFormState();
-}
-
-class _pinFormState extends State<pinForm> {
-  FocusNode? focus2;
-  FocusNode? focus3;
-  FocusNode? focus4;
-  FocusNode? focus5;
-
-  @override
-  void initState() {
-    super.initState();
-    focus2 = FocusNode();
-    focus3 = FocusNode();
-    focus4 = FocusNode();
-    focus5 = FocusNode();
-  }
-
-  @override
-  void dispose() {
-    focus2!.dispose();
-    focus3!.dispose();
-    focus4!.dispose();
-    focus5!.dispose();
-    super.dispose();
-  }
-
-  void _nextField({String? value, FocusNode? focus}) {
-    if (value!.length == 1) {
-      focus!.requestFocus();
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      child: Row(
-        children: [
-          Spacer(
-            flex: 2,
-          ),
-          SizedBox(
-            width: 40,
-            child: TextFormField(
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                _nextField(value: value, focus: focus2);
-              },
-            ),
-          ),
-          Spacer(
-            flex: 1,
-          ),
-          SizedBox(
-            width: 40,
-            child: TextFormField(
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                _nextField(value: value, focus: focus3);
-              },
-            ),
-          ),
-          Spacer(
-            flex: 1,
-          ),
-          SizedBox(
-            width: 40,
-            child: TextFormField(
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                _nextField(value: value, focus: focus4);
-              },
-            ),
-          ),
-          Spacer(
-            flex: 1,
-          ),
-          SizedBox(
-            width: 40,
-            child: TextFormField(
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                _nextField(value: value, focus: focus5);
-              },
-            ),
-          ),
-          Spacer(
-            flex: 1,
-          ),
-          SizedBox(
-            width: 40,
-            child: TextFormField(
-              textAlign: TextAlign.center,
-              keyboardType: TextInputType.number,
-              onChanged: (value) {
-                focus5!.unfocus();
-              },
-            ),
-          ),
-          Spacer(
-            flex: 2,
-          ),
-        ],
-      ),
-    );
+    await FirebaseCore.instance.sendCodeToFirebase(code: _code, verificationId: widget.verificationId, updatePhoneNumber:false).then((value) async {
+      if(value){
+        await widget.onVerified?.call();
+        await Future(() => UIBlock.unblock(context));
+        Future(() => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const Home()), (route) => false));
+        return;
+      }
+      await Future(() => UIBlock.unblock(context));
+      Future(() => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Code incorrect!"),behavior: SnackBarBehavior.floating)));
+    }).onError((error, stackTrace) {
+      UIBlock.unblock(context);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Une erreur s'est produite!"),behavior: SnackBarBehavior.floating));
+    });
   }
 }
 

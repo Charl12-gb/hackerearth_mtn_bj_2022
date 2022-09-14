@@ -63,6 +63,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '1077526061292',
     projectId: 'hackerearth-mtn-bj-2022',
     storageBucket: 'hackerearth-mtn-bj-2022.appspot.com',
+    androidClientId: '1077526061292-9cpj8b3ku168seo4r8u52lvuvufj7vjo.apps.googleusercontent.com',
     iosClientId: '1077526061292-ofeb5vc7oc5hi9eiqi40t3gge762t4qi.apps.googleusercontent.com',
     iosBundleId: 'com.corel.hackerearthMtnBj2022',
   );

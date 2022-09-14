@@ -22,10 +22,7 @@ class appButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12)), // foreground
             backgroundColor: backgroundColor ),//AppColor.primaryColor
         onPressed: onPressed,
-        child: Text(
-          text,
-          style: TextStyle(color: AppColor.textColor2),
-        ),
+        child: Text(text, style: TextStyle(color: AppColor.textColor2),),
       ),
     );
   }

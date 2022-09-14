@@ -1,9 +1,19 @@
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/login.dart';
-import 'package:hackerearth_mtn_bj_2022/Views/optScreen.dart';
 import 'package:hackerearth_mtn_bj_2022/routes.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: 'recaptcha-v3-site-key',
+  );
   runApp(const MyApp());
 }
 
@@ -14,13 +24,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MTN',
+      title: 'Momo Epargne',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: Login.name,  //OPTScreen.name,
-      routes: Routes,
+      home: const Login(),
+      // initialRoute: Login.name,  //OPTScreen.name,
+      // routes: Routes,
     );
   }
 }

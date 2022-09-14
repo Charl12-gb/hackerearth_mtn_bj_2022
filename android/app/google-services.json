@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1077526061292-9cpj8b3ku168seo4r8u52lvuvufj7vjo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.corel.hackerearth_mtn_bj_2022",
+            "certificate_hash": "f018a754d0bd27938f23c70dc8f46fef0439b6d2"
+          }
+        },
+        {
           "client_id": "1077526061292-tvq1pmcg0k9dd3dovcivcldo0godpegv.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,6 +37,13 @@
             {
               "client_id": "1077526061292-tvq1pmcg0k9dd3dovcivcldo0godpegv.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1077526061292-ofeb5vc7oc5hi9eiqi40t3gge762t4qi.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.corel.hackerearthMtnBj2022"
+              }
             }
           ]
         }

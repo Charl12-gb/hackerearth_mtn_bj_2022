@@ -122,6 +122,11 @@ class FirebaseCore{
     await getFirebaseFirestore().collection(config.usersCollectionName).doc(user.id).update(userMap);
   }
 
+  Future<bool> hasUserWithPhoneNumber(String phoneNumber)async{
+    models.User? user = await getUserByPhoneNumber(phoneNumber: phoneNumber);
+    return user!=null;
+  }
+
   Future<models.User> getUser({required String userId})async{
     authCheck();
     final doc = await getFirebaseFirestore().collection(config.usersCollectionName).doc(userId).get();
