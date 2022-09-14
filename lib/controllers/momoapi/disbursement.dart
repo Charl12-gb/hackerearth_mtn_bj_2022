@@ -6,7 +6,7 @@ import 'api_request.dart';
 import 'error/momo_api_error.dart';
 
 class Disbursement extends ApiRequest{
-  Disbursement({required super.baseUrl, required super.targetEnvironment, required super.currency, required super.disbursementPrimaryKey, required super.disbursementUserId, required super.disbursementApiSecret}) : super(collectionApiSecret: '',collectionPrimaryKey: '', collectionUserId: '',remittanceApiSecret: '',remittancePrimaryKey: '',remittanceUserId: '');
+  Disbursement({required super.baseUrl, required super.targetEnvironment, required super.currency, required super.disbursementPrimaryKey, required super.disbursementUserId, required super.disbursementApiSecret, required super.callbackUrl}) : super(collectionApiSecret: '',collectionPrimaryKey: '', collectionUserId: '',remittanceApiSecret: '',remittancePrimaryKey: '',remittanceUserId: '');
 
   Future<AccessToken> getToken() async {
     var url = '$baseUrl/disbursement/token/';
@@ -93,6 +93,37 @@ class Disbursement extends ApiRequest{
 
     return uuid;
   }
+
+  Future<ApiUser> createUser()async{
+    var url = "$baseUrl/v1_0/apiuser";
+    var uuid = const Uuid().v4();
+
+    var headers = {
+      "Ocp-Apim-Subscription-Key" : disbursementPrimaryKey,
+      "X-Reference-Id" : uuid
+    };
+
+    var data = {
+      "providerCallbackHost": callbackUrl
+    };
+
+    var response = await request(method: Http.post, url: url, headers: headers, body: data);
+    disbursementUserId = uuid;
+    var apikey = await createApikey();
+    disbursementApiSecret = apikey;
+    return ApiUser(uuid: uuid, apiKey: apikey);
+  }
+
+  Future<String> createApikey() async {
+    var url = "$baseUrl/v1_0/apiuser/$disbursementUserId/apikey";
+    var headers = {
+      "Ocp-Apim-Subscription-Key" : disbursementPrimaryKey,
+    };
+    var response = await request(method: Http.post, url: url, headers: headers);
+
+    return response.data["apiKey"];
+  }
+
 
   isActive({required mobile, params = const []}) async {
     var token = await getToken();

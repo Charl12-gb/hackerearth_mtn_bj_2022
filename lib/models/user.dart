@@ -1,3 +1,4 @@
+import 'package:hackerearth_mtn_bj_2022/controllers/utils/extensions.dart';
 import 'package:hackerearth_mtn_bj_2022/models/enums.dart';
 
 class User{
@@ -56,7 +57,7 @@ class User{
       id: map['id'] as String,
       name: map['name'] as String,
       phoneNumber: map['phoneNumber'] as String,
-      role: map['role'] as UserRole,
+      role: UserRoleExtension.fromString(map['role']),
       createdAt: map['createdAt'] as int,
       updatedAt: map['updatedAt'] as int,
       metadata: map['metadata'] as Map<String, dynamic>,

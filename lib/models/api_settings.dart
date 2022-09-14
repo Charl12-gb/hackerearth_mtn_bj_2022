@@ -119,7 +119,7 @@ class ApiSettings{
       disbursementPrimaryKey: map['disbursementPrimaryKey'] as String,
       createdAt: map['createdAt'] as int,
       updatedAt: map['updatedAt'] as int,
-      metadata: map['metadata'] as Map<String, dynamic>,
+      metadata: map['metadata'] as Map<String, dynamic>?,
     );
   }
 }

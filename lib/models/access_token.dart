@@ -19,9 +19,9 @@ class AccessToken {
 
   factory AccessToken.fromMap(Map<String, dynamic> map) {
     return AccessToken(
-      accessToken: map['accessToken'] as String,
-      tokenType: map['tokenType'] as String,
-      expiresIn: map['expiresIn'] as int,
+      accessToken: map['access_token'] as String,
+      tokenType: map['token_type'] as String,
+      expiresIn: map['expires_in'] as int,
     );
   }
   

@@ -5,7 +5,7 @@ export 'account.dart';
 export 'app_setting.dart';
 export 'access_token.dart';
 export 'balance.dart';
-export 'login_body.dart';
+export 'api_user.dart';
 export 'momo_transactions.dart';
 export 'transfer.dart';
 export 'momo_account.dart';

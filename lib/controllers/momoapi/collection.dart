@@ -6,7 +6,7 @@ import 'api_request.dart';
 import 'error/momo_api_error.dart';
 
 class Collection extends ApiRequest{
-  Collection({required super.baseUrl, required super.targetEnvironment, required super.currency, required super.collectionPrimaryKey, required super.collectionUserId, required super.collectionApiSecret}) : super(disbursementApiSecret: '',disbursementPrimaryKey: '', disbursementUserId: '',remittanceApiSecret: '',remittancePrimaryKey: '',remittanceUserId: '');
+  Collection({required super.baseUrl, required super.targetEnvironment, required super.currency, required super.collectionPrimaryKey, required super.collectionUserId, required super.collectionApiSecret, required super.callbackUrl}) : super(disbursementApiSecret: '',disbursementPrimaryKey: '', disbursementUserId: '',remittanceApiSecret: '',remittancePrimaryKey: '',remittanceUserId: '');
 
   Future<AccessToken> getToken() async {
     var url = '$baseUrl/collection/token/';
@@ -71,7 +71,6 @@ class Collection extends ApiRequest{
 
     var headers = {
       'Authorization': 'Bearer ${token.getToken()}',
-      'Content-Type' : 'application/json',
       "X-Target-Environment" : targetEnvironment,
       'Ocp-Apim-Subscription-Key' : collectionPrimaryKey,
       "X-Reference-Id" : uuid
@@ -89,9 +88,41 @@ class Collection extends ApiRequest{
       "amount": params['amount']
     };
 
+    print(data);
+    print(headers);
+
     var response = await request(method: Http.post, url: url, headers: headers, body: data);
 
     return uuid;
+  }
+
+  Future<ApiUser> createUser()async{
+    var url = "$baseUrl/v1_0/apiuser";
+    var uuid = const Uuid().v4();
+
+    var headers = {
+      "Ocp-Apim-Subscription-Key" : collectionPrimaryKey,
+      "X-Reference-Id" : uuid,
+    };
+
+    var data = {
+      "providerCallbackHost": callbackUrl
+    };
+
+    var response = await request(method: Http.post, url: url, headers: headers, body: data);
+    collectionUserId = uuid;
+    var apikey = await createApikey();
+    collectionApiSecret = apikey;
+    return ApiUser(uuid: uuid, apiKey: apikey);
+  }
+
+  Future<String> createApikey() async {
+    var url = "$baseUrl/v1_0/apiuser/$collectionUserId/apikey";
+    var headers = {
+      "Ocp-Apim-Subscription-Key" : collectionPrimaryKey,
+    };
+    var response = await request(method: Http.post, url: url, headers: headers);
+    return response.data["apiKey"];
   }
 
   isActive({required mobile, params = const []}) async {
@@ -115,9 +146,9 @@ class Collection extends ApiRequest{
   ///
   /// @throws \MomoApi\Error\MomoApiError if $params exists and is not an array
   _validateParams({params}) {
-    if (params && !(params.runtimeType==List)) {
-    var message = "You must pass an array as the first argument to MomoApi API method calls.  (HINT: an example call to create a charge would be: \"MomoApi\\Charge::create(['amount' => 100, 'currency' => 'usd', 'source' => 'tok_1234'])\")";
-    throw MomoApiError(message: message);
+    if (params == null && !(params.runtimeType==List)) {
+      var message = "You must pass an array as the first argument to MomoApi API method calls.  (HINT: an example call to create a charge would be: \"MomoApi\\Charge::create(['amount' => 100, 'currency' => 'usd', 'source' => 'tok_1234'])\")";
+      throw MomoApiError(message: message);
     }
   }
 

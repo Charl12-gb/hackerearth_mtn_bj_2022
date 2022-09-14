@@ -48,6 +48,7 @@ dependencies:
   phone_number: ^1.0.0
   uiblock: ^2.0.2
   firebase_app_check: ^0.0.7+1
+  username_gen: ^1.0.4
 
 dev_dependencies:
   flutter_test:

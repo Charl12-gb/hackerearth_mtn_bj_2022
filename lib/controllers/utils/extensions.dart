@@ -9,3 +9,9 @@ extension TransactionTypeExtension on TransactionType{
     return TransactionType.values.firstWhere((element) => element.toShortString()==role);
   }
 }
+
+extension UserRoleExtension on UserRole{
+  static UserRole fromString(String role){
+    return UserRole.values.firstWhere((element) => element.name==role);
+  }
+}

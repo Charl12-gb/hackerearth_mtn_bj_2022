@@ -4,7 +4,7 @@ class Account{
   final String name;
   final double balance;
   final String description;
-  final String withdrawalDate;
+  final int withdrawalDate;
   final int createdAt;
   final int updatedAt;
   final Map<String, dynamic>? metadata;
@@ -27,7 +27,7 @@ class Account{
     String? name,
     double? balance,
     String? description,
-    String? withdrawalDate,
+    int? withdrawalDate,
     int? createdAt,
     int? updatedAt,
     Map<String, dynamic>? metadata,
@@ -64,9 +64,9 @@ class Account{
       id: map['id'] as String,
       userId: map['userId'] as String,
       name: map['name'] as String,
-      balance: map['balance'] as double,
+      balance: double.tryParse(map['balance'].toString())??0,
       description: map['description'] as String,
-      withdrawalDate: map['withdrawalDate'] as String,
+      withdrawalDate: map['withdrawalDate'] as int,
       createdAt: map['createdAt'] as int,
       updatedAt: map['updatedAt'] as int,
       metadata: map['metadata'] as Map<String, dynamic>,

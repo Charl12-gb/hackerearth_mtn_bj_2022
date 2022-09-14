@@ -11,73 +11,23 @@ import 'error/momo_api_error.dart';
 import 'error/rate_limit.dart';
 
 class ApiRequest {
-  final String _baseUrl;
-  final String _targetEnvironment;
-  final String _currency;
-  final String? _collectionPrimaryKey;
-  final String? _collectionUserId;
-  final String? _collectionApiSecret;
-  final String? _remittanceUserId;
-  final String? _remittanceApiSecret;
-  final String? _remittancePrimaryKey;
-  final String? _disbursementUserId;
-  final String? _disbursementApiSecret;
-  final String? _disbursementPrimaryKey;
+  String baseUrl;
+  String targetEnvironment;
+  String currency;
+  String callbackUrl;
+  String? collectionPrimaryKey;
+  String? collectionUserId;
+  String? collectionApiSecret;
+  String? remittanceUserId;
+  String? remittanceApiSecret;
+  String? remittancePrimaryKey;
+  String? disbursementUserId;
+  String? disbursementApiSecret;
+  String? disbursementPrimaryKey;
 
   static late Dio _httpClient;
 
-  const ApiRequest({
-    required String baseUrl,
-    required String targetEnvironment,
-    required String currency,
-    required String? collectionPrimaryKey,
-    required String? collectionUserId,
-    required String? collectionApiSecret,
-    required String? remittanceUserId,
-    required String? remittanceApiSecret,
-    required String? remittancePrimaryKey,
-    required String? disbursementUserId,
-    required String? disbursementApiSecret,
-    required String? disbursementPrimaryKey,
-  })  : _baseUrl = baseUrl,
-        _targetEnvironment = targetEnvironment,
-        _currency = currency,
-        _collectionPrimaryKey = collectionPrimaryKey,
-        _collectionUserId = collectionUserId,
-        _collectionApiSecret = collectionApiSecret,
-        _remittanceUserId = remittanceUserId,
-        _remittanceApiSecret = remittanceApiSecret,
-        _remittancePrimaryKey = remittancePrimaryKey,
-        _disbursementUserId = disbursementUserId,
-        _disbursementApiSecret = disbursementApiSecret,
-        _disbursementPrimaryKey = disbursementPrimaryKey;
-
   static get httpClient => _httpClient;
-
-  String? get disbursementPrimaryKey => _disbursementPrimaryKey;
-
-  String? get disbursementApiSecret => _disbursementApiSecret;
-
-  String? get disbursementUserId => _disbursementUserId;
-
-  String? get remittancePrimaryKey => _remittancePrimaryKey;
-
-  String? get remittanceApiSecret => _remittanceApiSecret;
-
-  String? get remittanceUserId => _remittanceUserId;
-
-  String? get collectionApiSecret => _collectionApiSecret;
-
-  String? get collectionUserId => _collectionUserId;
-
-  String? get collectionPrimaryKey => _collectionPrimaryKey;
-
-  String get currency => _currency;
-
-  String get targetEnvironment => _targetEnvironment;
-
-  String get baseUrl => _baseUrl;
-
 
   @protected static set httpClient(value) {
     _httpClient = value;
@@ -103,7 +53,9 @@ class ApiRequest {
         }
         return response;
       }on DioError catch (_){
-        throw Exception("");
+        debugPrint(_.response?.data.toString());
+        debugPrint(_.response?.realUri.toString());
+        throw Exception(_.toString());
       }
   }
 
@@ -132,4 +84,20 @@ class ApiRequest {
         return MomoApiError(message: msg, httpBody: param, httpHeaders: rheaders, httpStatus: rcode, jsonBody: '');
     }
   }
+
+  ApiRequest({
+    required this.baseUrl,
+    required this.targetEnvironment,
+    required this.currency,
+    required this.callbackUrl,
+    this.collectionPrimaryKey,
+    this.collectionUserId,
+    this.collectionApiSecret,
+    this.remittanceUserId,
+    this.remittanceApiSecret,
+    this.remittancePrimaryKey,
+    this.disbursementUserId,
+    this.disbursementApiSecret,
+    this.disbursementPrimaryKey,
+  });
 }

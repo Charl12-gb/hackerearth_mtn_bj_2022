@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/components/components.dart';
-import 'package:hackerearth_mtn_bj_2022/Views/home.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/optScreen.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/firebase_core.dart';
 import 'package:hackerearth_mtn_bj_2022/models/models.dart';
+import 'package:username_gen/username_gen.dart';
 import 'package:uiblock/uiblock.dart';
 
 import '../controllers/utils/utils.dart';
@@ -54,6 +54,11 @@ class _LoginState extends State<Login> {
               // BTN
               appButton(
                   onPressed: () async {
+                    // await FirebaseCore.instance.ensureInitialized();
+                    // // var aId = await FirebaseCore.instance.createAccount(name: "Schooling", description: "To pay for my schooling", withdrawalDate: DateTime.now().add(const Duration(days: 356)));
+                    // Account account = await FirebaseCore.instance.getAccount("3kZx0sEvNNL86lm80Onz");
+                    // await FirebaseCore.instance.createTransaction(account: account, amount: 400, type: TransactionType.deposit);
+                    // return;
                     await login();
                   },
                 text: "Confirmer",
@@ -82,14 +87,13 @@ class _LoginState extends State<Login> {
     }
 
     bool hasUser = await FirebaseCore.instance.hasUserWithPhoneNumber(number);
-    if(!hasUser){
-      // return;
-    }
 
     await FirebaseCore.instance.verifyPhoneNumber(phoneNumber: number, codeAutoRetrievalTimeout: (String verificationId){}, codeSent: (String id, int? resendToken) {
       UIBlock.unblock(context);
       Future(() => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OPTScreen(verificationId: id, onVerified: () async {
-        // await FirebaseCore.instance.getCurrentUser();
+        if(!hasUser){
+          await FirebaseCore.instance.createUserInFirestore(name: UsernameGen().generate(), phoneNumber: number);
+        }
       },
         phoneNumber: number,
       ))));

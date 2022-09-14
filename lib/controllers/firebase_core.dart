@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/momoapi/collection.dart';
+import 'package:hackerearth_mtn_bj_2022/controllers/momoapi/disbursement.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/utils/utils.dart';
 import 'package:hackerearth_mtn_bj_2022/models/enums.dart';
 
@@ -143,19 +144,20 @@ class FirebaseCore{
   }
 
   ///Create transaction in firebase
-  Future<String> createTransaction({required models.Account account, required double amount, required models.TransactionType type, String payeeNote ="",String payerMessage = "", Map<String, dynamic> metadata = const {}}) async {
+  Future<String> createTransaction({required models.Account account, required double amount, required models.TransactionType type, String? payeeNote,String? payerMessage, Map<String, dynamic> metadata = const {}}) async {
     authCheck();
 
     assert(apiSettings!=null);
-    var client = Collection(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, collectionPrimaryKey: apiSettings?.collectionPrimaryKey, collectionUserId: apiSettings?.collectionUserId, collectionApiSecret: apiSettings?.collectionApiSecret);
+    var client = Collection(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, collectionPrimaryKey: apiSettings?.collectionPrimaryKey, collectionUserId: apiSettings?.collectionUserId, collectionApiSecret: apiSettings?.collectionApiSecret, callbackUrl: apiSettings!.callbackHost);
 
     var doc = getFirebaseFirestore().collection(config.transactionCollectionName).doc();
 
-    var params = {'mobile': currentUser?.phoneNumber.substring("+229".length), 'payee_note' : payeeNote, 'payer_message' : payerMessage, 'external_id' : doc.id, 'currency' : apiSettings?.currency, 'amount' : amount};
+    var params = {'mobile': currentUser?.phoneNumber.substring("+229".length), 'payee_note' : payeeNote??"Dépôt Momo Epargne sur votre compte : ${account.name}", 'payer_message' : payerMessage??account.description, 'external_id' : doc.id, 'currency' : apiSettings?.currency, 'amount' : amount};
 
     var uuid = await client.requestToPay(params: params);
+    var t = await client.getTransaction(transactionId: uuid);
 
-    metadata.addAll({"additionalInfo":params});
+    metadata.addAll({"additionalInfo":t.toMap()});
 
     await getFirebaseFirestore().collection(config.transactionCollectionName).doc(doc.id).set({
       'userId': firebaseUser?.uid,
@@ -198,9 +200,10 @@ class FirebaseCore{
   }
 
   /// Create Saving Account
-  Future<void> createAccount({required String name, required String description, required DateTime withdrawalDate,Map<String, dynamic> metadata = const {}})async {
+  Future<String> createAccount({required String name, required String description, required DateTime withdrawalDate,Map<String, dynamic> metadata = const {}})async {
     authCheck();
-    await getFirebaseFirestore().collection(config.accountCollectionName).add({
+    var doc = getFirebaseFirestore().collection(config.accountCollectionName).doc();
+    await getFirebaseFirestore().collection(config.accountCollectionName).doc(doc.id).set({
       'userId': firebaseUser?.uid,
       'name': name,
       'description': description,
@@ -210,6 +213,7 @@ class FirebaseCore{
       'updatedAt':FieldValue.serverTimestamp(),
       'metadata': metadata,
     });
+    return doc.id;
   }
 
   ///Update transaction
@@ -232,7 +236,9 @@ class FirebaseCore{
   Future<models.Account> getAccount(String id) async {
     authCheck();
     var doc = await getFirebaseFirestore().collection(config.accountCollectionName).doc(id).get();
-    final account =  models.Account.fromMap(processSimpleDocument(doc));
+    var map = processSimpleDocument(doc);
+    map["withdrawalDate"] = map["withdrawalDate"]?.millisecondsSinceEpoch;
+    final account = models.Account.fromMap(map);
     return account;
   }
 
@@ -261,7 +267,30 @@ class FirebaseCore{
   Future<models.ApiSettings> getApiSetting() async {
     authCheck();
     var query = await getFirebaseFirestore().collection(config.apiSettingCollectionName).limit(1).get();
-    var doc = query.docs.first.data();
-    return models.ApiSettings.fromMap(doc);
+    if(query.docs.isEmpty)throw Exception("No Found");
+
+    models.ApiSettings apiSettings = models.ApiSettings.fromMap(processSimpleDocument(query.docs.first));
+
+    bool processUpdate = false;
+    if(apiSettings.collectionUserId.isEmpty){
+      var c = Collection(baseUrl: apiSettings.baseUrl, targetEnvironment: apiSettings.environment, currency: apiSettings.currency, collectionPrimaryKey: apiSettings.collectionPrimaryKey, collectionUserId: apiSettings.collectionUserId, collectionApiSecret: apiSettings.collectionApiSecret, callbackUrl: apiSettings.callbackHost);
+      var u = await c.createUser();
+      apiSettings = apiSettings.copyWith(collectionUserId: u.uuid, collectionApiSecret: u.apiKey);
+      processUpdate = true;
+    }
+
+    if(apiSettings.disbursementUserId.isEmpty){
+      var c = Disbursement(baseUrl: apiSettings.baseUrl, targetEnvironment: apiSettings.environment, currency: apiSettings.currency, disbursementPrimaryKey: apiSettings.disbursementPrimaryKey, disbursementUserId: apiSettings.disbursementUserId, disbursementApiSecret: apiSettings.disbursementApiSecret, callbackUrl: apiSettings.callbackHost);
+      var u = await c.createUser();
+      apiSettings = apiSettings.copyWith(disbursementUserId: u.uuid, disbursementApiSecret: u.apiKey);
+      processUpdate = true;
+    }
+    if(processUpdate)updateApiSettings(apiSettings);
+
+    return apiSettings;
   }
+
+  ///Create Api user
+
+
 }

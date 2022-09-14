@@ -5,6 +5,8 @@ class MomoTransaction{
   final String currency;
   final String financialTransactionId;
   final String externalId;
+  final String payerMessage;
+  final String payeeNote;
   final Payer payer;
   final String status;
   final String reason;
@@ -14,10 +16,37 @@ class MomoTransaction{
     required this.currency,
     required this.financialTransactionId,
     required this.externalId,
+    required this.payerMessage,
+    required this.payeeNote,
     required this.payer,
     required this.status,
     required this.reason,
   });
+
+  MomoTransaction copyWith({
+    String? amount,
+    String? currency,
+    String? financialTransactionId,
+    String? externalId,
+    String? payerMessage,
+    String? payeeNote,
+    Payer? payer,
+    String? status,
+    String? reason,
+  }) {
+    return MomoTransaction(
+      amount: amount ?? this.amount,
+      currency: currency ?? this.currency,
+      financialTransactionId:
+          financialTransactionId ?? this.financialTransactionId,
+      externalId: externalId ?? this.externalId,
+      payerMessage: payerMessage ?? this.payerMessage,
+      payeeNote: payeeNote ?? this.payeeNote,
+      payer: payer ?? this.payer,
+      status: status ?? this.status,
+      reason: reason ?? this.reason,
+    );
+  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -25,7 +54,9 @@ class MomoTransaction{
       'currency': this.currency,
       'financialTransactionId': this.financialTransactionId,
       'externalId': this.externalId,
-      'payer': this.payer,
+      'payerMessage': this.payerMessage,
+      'payeeNote': this.payeeNote,
+      'payer': this.payer.toMap(),
       'status': this.status,
       'reason': this.reason,
     };
@@ -35,9 +66,11 @@ class MomoTransaction{
     return MomoTransaction(
       amount: map['amount'] as String,
       currency: map['currency'] as String,
-      financialTransactionId: map['financialTransactionId'] as String,
+      financialTransactionId: map['financialTransactionId']??"",
       externalId: map['externalId'] as String,
-      payer: Payer.fromMap(map['payer']),
+      payerMessage: map['payerMessage'] as String,
+      payeeNote: map['payeeNote'] as String,
+      payer:  Payer.fromMap(map['payer']),
       status: map['status'] as String,
       reason: map['reason'] as String,
     );
