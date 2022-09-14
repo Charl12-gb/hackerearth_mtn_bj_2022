@@ -23,7 +23,6 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
-    // FirebaseCore.instance.createApiSettings(ApiSettings(id: "0", baseUrl: "", environment: "target", currency: "EUR", callbackHost: "", collectionPrimaryKey: "f9b78d8a0abe4e629071bb2a71b67ebe", collectionUserId: "collectionUserId", collectionApiSecret: "collectionApiSecret", remittanceUserId: "remittanceUserId", remittanceApiSecret: "remittanceApiSecret", remittancePrimaryKey: "remittancePrimaryKey", disbursementUserId: "disbursementUserId", disbursementApiSecret: "disbursementApiSecret", disbursementPrimaryKey: "7eafb60085684ec985cc69725c521b6f", createdAt: 0, updatedAt: 0));
   }
 
   @override
