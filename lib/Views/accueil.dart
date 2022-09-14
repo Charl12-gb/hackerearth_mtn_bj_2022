@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/newSousCompt.dart';
+import 'package:hackerearth_mtn_bj_2022/Views/updateSousCompte.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
 
 import 'components/components.dart';
@@ -56,7 +57,9 @@ class Accueil extends StatelessWidget {
                     date: "05/11/2022",
                     aviable: true,
                     retirer: () {},
-                    deposer: () {},
+                    deposer: () {
+                      Navigator.pushNamed(context, UpdateSousCompte.name);
+                    },
                   ),
                   SousCompteItem(
                     raison: "Achât de moto",
@@ -65,7 +68,9 @@ class Accueil extends StatelessWidget {
                     date: "05/11/2022",
                     aviable: false,
                     retirer: () {},
-                    deposer: () {},
+                    deposer: () {
+                      Navigator.pushNamed(context, UpdateSousCompte.name);
+                    },
                   ),
                   SousCompteItem(
                     raison: "Assurance maladie",
@@ -74,7 +79,9 @@ class Accueil extends StatelessWidget {
                     date: "05/11/2022",
                     aviable: false,
                     retirer: () {},
-                    deposer: () {},
+                    deposer: () {
+                      Navigator.pushNamed(context, UpdateSousCompte.name);
+                    },
                   ),
                   SousCompteItem(
                     raison: "Contribution des enfants",
@@ -83,7 +90,9 @@ class Accueil extends StatelessWidget {
                     date: "05/11/2022",
                     aviable: false,
                     retirer: () {},
-                    deposer: () {},
+                    deposer: () {
+                      Navigator.pushNamed(context, UpdateSousCompte.name);
+                    },
                   ),
                   SousCompteItem(
                     raison: "Achât de moto",
@@ -92,7 +101,9 @@ class Accueil extends StatelessWidget {
                     date: "05/11/2022",
                     aviable: false,
                     retirer: () {},
-                    deposer: () {},
+                    deposer: () {
+                      Navigator.pushNamed(context, UpdateSousCompte.name);
+                    },
                   ),
                   SousCompteItem(
                     raison: "Assurance maladie",
@@ -101,7 +112,9 @@ class Accueil extends StatelessWidget {
                     date: "05/11/2022",
                     aviable: false,
                     retirer: () {},
-                    deposer: () {},
+                    deposer: () {
+                      Navigator.pushNamed(context, UpdateSousCompte.name);
+                    },
                   ),
                 ],
               )

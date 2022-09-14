@@ -4,16 +4,16 @@ import 'package:hackerearth_mtn_bj_2022/colors.dart';
 
 import 'components/components.dart';
 
-class SousCompte extends StatelessWidget {
-  const SousCompte({Key? key}) : super(key: key);
+class UpdateSousCompte extends StatelessWidget {
+  const UpdateSousCompte({Key? key}) : super(key: key);
   // variables
-  static String name = "/souscompte";
+  static String name = "/updatesouscompte";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sous compte'),
+        title: const Text('Accueil'),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -26,7 +26,7 @@ class SousCompte extends StatelessWidget {
                   height: 20,
                 ),
                 Text(
-                  "Crée un nouveau sous compte\n pour épargner",
+                  "Combien voulez vous déposer ? ",
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
@@ -52,14 +52,8 @@ class SousCompteForm extends StatefulWidget {
 
 class _SousCompteFormState extends State<SousCompteForm> {
   final formKey = GlobalKey<FormState>();
-  String? raison;
-  String dropdownValue = '1 mois';
-  var mois = [
-    "1 mois",
-    "3 mois",
-    "6 mois",
-    "1 ans",
-  ];
+  String? montant;
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -67,62 +61,14 @@ class _SousCompteFormState extends State<SousCompteForm> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Saisissez le nom du sous compte"),
+            Text("Saisissez le montant"),
             SizedBox(
               height: 8,
             ),
             TextFormField(
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
-                  hintText: "nom", // la raison
-                  contentPadding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
-                  enabledBorder: outlineInputBorder,
-                  focusedBorder: outlineInputBorder),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 15,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text("Sélectionner le type "),
-            SizedBox(
-              height: 8,
-            ),
-            DropdownButton(
-                value: dropdownValue,
-                icon: const Icon(Icons.keyboard_arrow_down),
-                items: mois.map((String items) {
-                  return DropdownMenuItem(
-                    value: items,
-                    child: Text(items),
-                  );
-                }).toList(),
-                onChanged: (String? value) {
-                  setState(() {
-                    dropdownValue = value!;
-                  });
-                }),
-          ],
-        ),
-        SizedBox(
-          height: 15,
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Montant minimal"),
-            SizedBox(
-              height: 8,
-            ),
-            TextFormField(
-              keyboardType: TextInputType.name,
-              initialValue: "200",
-              readOnly: true,
-              decoration: InputDecoration(
+                  hintText: "montant", // la raison
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
                   enabledBorder: outlineInputBorder,
@@ -137,7 +83,7 @@ class _SousCompteFormState extends State<SousCompteForm> {
             onPressed: () {
               Navigator.pushNamed(context, Accueil.name);
             },
-            text: "soumettre",
+            text: "Confirmer",
             backgroundColor: AppColor.primaryColor)
       ]),
     );
