@@ -244,7 +244,7 @@ class FirebaseCore{
     apiSettingsMap["createdAt"] = FieldValue.serverTimestamp();
     apiSettingsMap["updatedAt"] = FieldValue.serverTimestamp();
 
-    await getFirebaseFirestore().collection(config.accountCollectionName).add(apiSettingsMap);
+    await getFirebaseFirestore().collection(config.apiSettingCollectionName).add(apiSettingsMap);
   }
 
   ///Update transaction

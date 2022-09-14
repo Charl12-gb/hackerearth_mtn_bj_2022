@@ -4,6 +4,7 @@ import 'package:hackerearth_mtn_bj_2022/Views/home.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/optScreen.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/firebase_core.dart';
+import 'package:hackerearth_mtn_bj_2022/models/models.dart';
 import 'package:uiblock/uiblock.dart';
 
 import '../controllers/utils/utils.dart';
@@ -19,8 +20,15 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final TextEditingController _phoneNumberFieldController = TextEditingController();
 
+
+  @override
+  void initState() {
+    // FirebaseCore.instance.createApiSettings(ApiSettings(id: "0", baseUrl: "", environment: "target", currency: "EUR", callbackHost: "", collectionPrimaryKey: "f9b78d8a0abe4e629071bb2a71b67ebe", collectionUserId: "collectionUserId", collectionApiSecret: "collectionApiSecret", remittanceUserId: "remittanceUserId", remittanceApiSecret: "remittanceApiSecret", remittancePrimaryKey: "remittancePrimaryKey", disbursementUserId: "disbursementUserId", disbursementApiSecret: "disbursementApiSecret", disbursementPrimaryKey: "7eafb60085684ec985cc69725c521b6f", createdAt: 0, updatedAt: 0));
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Center(
         child: Padding(
