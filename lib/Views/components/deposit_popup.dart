@@ -96,6 +96,7 @@ class DepositPopup {
     Future<void> createTransaction() async {
       UIBlock.block(context);
       await FirebaseCore.instance.createTransaction(account: account, amount: available, type: TransactionType.withdrawal).then((value) async {
+        Future.delayed(const Duration(seconds: 10),() => FirebaseCore.instance.runTransactionsChecker());
         UIBlock.unblock(context);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Demande de retrait en attente!"), behavior: SnackBarBehavior.floating,));
       }).onError((error, stackTrace){

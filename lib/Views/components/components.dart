@@ -151,8 +151,8 @@ class SousCompteItem extends StatelessWidget {
   }
 }
 
-class sousCompteLine extends StatelessWidget {
-  const sousCompteLine({
+class SousCompteLine extends StatelessWidget {
+  const SousCompteLine({
     Key? key,
     required this.couleur,
     required this.text,

@@ -7,9 +7,11 @@ class Transfer{
   final String externalId;
   final String currency;
   final String amount;
+  final String status;
 
   const Transfer({
     required this.payee,
+    required this.status,
     required this.payeeNote,
     required this.payerMessage,
     required this.externalId,
@@ -25,6 +27,7 @@ class Transfer{
       'externalId': this.externalId,
       'currency': this.currency,
       'amount': this.amount,
+      'status': this.status,
     };
   }
 
@@ -36,6 +39,7 @@ class Transfer{
       externalId: map['externalId'] as String,
       currency: map['currency'] as String,
       amount: map['amount'] as String,
+      status: map['status'] as String,
     );
   }
 
@@ -46,9 +50,11 @@ class Transfer{
     String? externalId,
     String? currency,
     String? amount,
+    String? status,
   }) {
     return Transfer(
       payee: payee ?? this.payee,
+      status: status ?? this.status,
       payeeNote: payeeNote ?? this.payeeNote,
       payerMessage: payerMessage ?? this.payerMessage,
       externalId: externalId ?? this.externalId,

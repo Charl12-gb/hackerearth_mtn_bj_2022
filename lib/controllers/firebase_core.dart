@@ -204,14 +204,17 @@ class FirebaseCore{
     return {"id":doc.id, "uuid":uuid};
   }
 
-  ///Update transaction
-  Future<void> updateTransaction(models.Transaction transaction)async {
-    authCheck();
+  Map<String, dynamic> transactionToMap(models.Transaction transaction){
     var transactionMap = transaction.toMap();
     transactionMap.removeWhere((key, value) => key=="createdAt" || key=="id" || key=="userId");
     transactionMap['updatedAt'] = FieldValue.serverTimestamp();
+    return transactionMap;
+  }
 
-    await getFirebaseFirestore().collection(config.transactionCollectionName).doc(transaction.id).update(transactionMap);
+  ///Update transaction
+  Future<void> updateTransaction(models.Transaction transaction)async {
+    authCheck();
+    await getFirebaseFirestore().collection(config.transactionCollectionName).doc(transaction.id).update(transactionToMap(transaction));
   }
 
   ///Get one transaction
@@ -230,15 +233,12 @@ class FirebaseCore{
      return c.getTransaction(transactionId: transactionUuid);
     }).asyncMap((event) async {
       var t = await event;
-      print(t.toMap());
       var s = TransactionStatusExtension.fromString(t.status.toLowerCase());
       if(s!=TransactionStatus.pending){
         await getTransaction(transactionId).then((value) async {
-          print(value.toMap());
           if(value.status!=TransactionStatus.pending)return;
           var v1 = value.copyWith(status: s);
           await getAccount(v1.accountId).then((value1) async {
-            print(value1.toMap());
             var v2 = value1.copyWith(isActive: true, balance: value1.balance+v1.amount);
             await updateTransaction(v1);
             await updateAccount(v2);
@@ -280,14 +280,17 @@ class FirebaseCore{
     return {"accountId":doc.id, "transaction": t};
   }
 
-  ///Update transaction
-  Future<void> updateAccount(models.Account account)async {
-    authCheck();
+  Map<String, dynamic> accountToMap(models.Account account){
     var accountMap = account.toMap();
     accountMap.removeWhere((key, value) => key=="createdAt" || key=="withdrawalDate" || key=="userId" || key=="id");
     accountMap['updatedAt'] = FieldValue.serverTimestamp();
+    return accountMap;
+  }
 
-    await getFirebaseFirestore().collection(config.accountCollectionName).doc(account.id).update(accountMap);
+  ///Update transaction
+  Future<void> updateAccount(models.Account account)async {
+    authCheck();
+    await getFirebaseFirestore().collection(config.accountCollectionName).doc(account.id).update(accountToMap(account));
   }
 
   /// Get current user accounts
@@ -369,14 +372,54 @@ class FirebaseCore{
     });
   }
 
-  // ///Get available withdrawals
-  // Stream<int> getAvailableWithdrawals() {
-  //   return getAccountsQuery().snapshots().map((snapshot){
-  //     return snapshot.docs.fold<double>(0, (previousValue, doc){
-  //       final data = doc.data() as Map<String, dynamic>;
-  //       return double.tryParse('${previousValue + data["balance"]}')??0;
-  //     });
-  //   });
-  // }
+  ///
+  Future<void> runTransactionsChecker() async {
+    await ensureInitialized();
 
+    var batch = getFirebaseFirestore().batch();
+
+    await getFirebaseFirestore().collection(config.transactionCollectionName)
+        .where("userId", isEqualTo: firebaseUser?.uid)
+        .where("status", isEqualTo: TransactionStatus.pending.name).get().then((value) async{
+          for (var element in value.docs) {
+            var trans = models.Transaction.fromMap(processSimpleDocument(element));
+            dynamic client;
+            switch(trans.type){
+              case TransactionType.deposit:
+                client = Collection(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, collectionPrimaryKey: apiSettings?.collectionPrimaryKey, collectionUserId: apiSettings?.collectionUserId, collectionApiSecret: apiSettings?.collectionApiSecret, callbackUrl: apiSettings!.callbackHost);
+                break;
+              case TransactionType.withdrawal:
+                client = Disbursement(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, disbursementPrimaryKey: apiSettings?.disbursementPrimaryKey, disbursementUserId: apiSettings?.disbursementUserId, disbursementApiSecret: apiSettings?.disbursementApiSecret, callbackUrl: apiSettings!.callbackHost);
+                break;
+            }
+            var t = await client.getTransaction(transactionId: trans.uuid);
+            var s = TransactionStatusExtension.fromString(t.status.toLowerCase());
+
+            if(s==TransactionStatus.pending)return;
+            trans = trans.copyWith(status: s);
+            var a = await getAccount(trans.accountId);
+            bool isFreezeAccount = a.metadata?["freezeAccount"]??false;
+            if(s==TransactionStatus.successful){
+              if(trans.type==TransactionType.deposit){
+                a = a.copyWith(isActive: true, balance: a.balance + trans.amount);
+              }else if(trans.type==TransactionType.withdrawal){
+                a = a.copyWith(isActive: false, balance: 0);
+              }
+            }else{
+              if(trans.type==TransactionType.deposit && !a.isActive){
+                await getFirebaseFirestore().collection(config.accountCollectionName).doc(a.id).delete();
+                return;
+              }else if(trans.type==TransactionType.withdrawal && isFreezeAccount){
+                a = a.copyWith(isActive: true, balance: a.metadata?["lastBalance"]??trans.amount);
+                a.metadata?.removeWhere((key, value) => key=="freezeAccount" || key=="lastBalance");
+              }
+            }
+
+            batch.update(getFirebaseFirestore().collection(config.transactionCollectionName).doc(trans.id), transactionToMap(trans));
+            batch.update(getFirebaseFirestore().collection(config.accountCollectionName).doc(a.id), accountToMap(a));
+          }
+    });
+
+    await batch.commit();
+  }
 }

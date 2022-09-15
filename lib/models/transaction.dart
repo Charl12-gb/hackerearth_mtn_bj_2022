@@ -83,8 +83,8 @@ class Transaction{
       amount: map['amount'] as double,
       status: TransactionStatusExtension.fromString(map['status']) ,
       type:  TransactionTypeExtension.fromString(map['type']),
-      createdAt: map['createdAt'] as int,
-      updatedAt: map['updatedAt'] as int,
+      createdAt: map['createdAt']??DateTime.now().millisecondsSinceEpoch,
+      updatedAt: map['updatedAt']??DateTime.now().millisecondsSinceEpoch,
       metadata: map['metadata'] as Map<String, dynamic>,
     );
   }

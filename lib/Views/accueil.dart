@@ -26,6 +26,7 @@ class _AccueilState extends State<Accueil> {
 
   void _initState() async {
     await FirebaseCore.instance.ensureInitialized();
+    FirebaseCore.instance.runTransactionsChecker();
     username = FirebaseCore.instance.currentUser?.name??"";
     setState(() {},);
   }
