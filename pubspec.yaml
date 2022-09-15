@@ -49,6 +49,10 @@ dependencies:
   uiblock: ^2.0.2
   firebase_app_check: ^0.0.7+1
   username_gen: ^1.0.4
+  google_fonts: ^3.0.1
+  provider: ^6.0.3
+  flutter_bloc: ^8.1.1
+  bloc: ^8.1.0
 
 dev_dependencies:
   flutter_test:

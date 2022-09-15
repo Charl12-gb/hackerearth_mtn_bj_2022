@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hackerearth_mtn_bj_2022/Views/components/deposit_popup.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
+import 'package:hackerearth_mtn_bj_2022/controllers/utils/extensions.dart';
+import 'package:hackerearth_mtn_bj_2022/controllers/utils/utils.dart';
+import 'package:hackerearth_mtn_bj_2022/models/models.dart';
 
 class appButton extends StatelessWidget {
   const appButton({
@@ -33,110 +37,114 @@ class appButton extends StatelessWidget {
 class SousCompteItem extends StatelessWidget {
   const SousCompteItem({
     Key? key,
-    required this.raison,
-    required this.sold,
-    required this.date,
-    this.retirer,
-    this.deposer,
-    required this.devise, required this.aviable,
+    required this.devise,
+    required this.account,
   }) : super(key: key);
-  final String raison;
-  final String sold;
   final String devise;
-  final String date;
-  final bool aviable;
-  final void Function()? retirer;
-  final void Function()? deposer;
+  final Account account;
 
   @override
   Widget build(BuildContext context) {
+    bool available = account.withdrawalDate <= DateTime.now().millisecondsSinceEpoch;
+
+    bool isFreezeAccount = account.metadata?["freezeAccount"]??false;
+
+    var size = MediaQuery.of(context).size;
     return Container(
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.only(bottom: 15),
+      padding: const EdgeInsets.all(15),
+      margin: const EdgeInsets.only(bottom: 15),
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+      ),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(raison),
-              Row(
-                children: [
-                  Text("Déposé :"),
-                  Text(
-                    sold + devise,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  )
-                ],
-              )
+              SizedBox(
+                width: size.width/2 - 30,
+                child: Text(account.name, maxLines: 2, overflow: TextOverflow.ellipsis),
+              ),
+              SizedBox(
+                // width: size.width/2,
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.calendar_month,
+                      color: Colors.grey,
+                      size: 16,
+                    ),
+                    Text(
+                      formattedDateTime(DateTime.fromMillisecondsSinceEpoch(account.withdrawalDate)),
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: Theme.of(context).textTheme.bodyText2?.color?.withOpacity(0.8)),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
           const Divider(),
+          const SizedBox(height: 15,),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: isFreezeAccount?MainAxisAlignment.center:MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.calendar_month,
-                    color: Colors.grey,
-                    size: 16,
-                  ),
-                  Text(
-                    'Date de retrait: ${date}',
-                    style: TextStyle(color: Colors.grey),
-                  )
-                ],
+              if(!isFreezeAccount)SizedBox(
+                // width: size.width/2 - 30,
+                child: Row(
+                  children: [
+                    Text(
+                      "Solde: ${account.balance}$devise",
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
               ),
+              !isFreezeAccount?
               Row(
                 children: [
                   InkWell(
-                    onTap: retirer,
+                    onTap: (){
+                      DepositPopup.requestTransfer(context, account);
+                    },
                     child: Container(
-                      padding: EdgeInsets.all(4),
-                      child: Text(
+                      padding: const EdgeInsets.all(4),
+                      decoration:
+                          simpleDecoration(colors: available? Colors.green : Colors.red, radius: 4),
+                      child: const Text(
                         'Rétirer',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 10,
                             fontWeight: FontWeight.w700),
                       ),
-                      decoration:
-                          simpleDecoration(colors: aviable? Colors.green : Colors.red, radius: 4),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   InkWell(
-                    onTap: deposer,
+                    onTap: (){
+                      DepositPopup.requestDeposit(context, account);
+                    },
                     child: Container(
-                      padding: EdgeInsets.all(4),
-                      child: Text(
+                      padding: const EdgeInsets.all(4),
+                      decoration:
+                          simpleDecoration(colors: Colors.blue, radius: 4),
+                      child: const Text(
                         'Déposer',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 10,
                             fontWeight: FontWeight.w700),
                       ),
-                      decoration:
-                          simpleDecoration(colors: Colors.blue, radius: 4),
                     ),
                   )
                 ],
-              )
+              ) :const Text("Opération en cours...", style: TextStyle(fontSize: 12, color: Colors.orange),)
             ],
           )
-        ],
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-        boxShadow: [
-          BoxShadow(
-              color: Color.fromARGB(255, 236, 236, 236),
-              blurRadius: 10.0,
-              spreadRadius: 0.5,
-              offset: Offset(0, 2))
         ],
       ),
     );
@@ -167,14 +175,10 @@ class sousCompteLine extends StatelessWidget {
           style: TextStyle(
               fontSize: 16, fontWeight: FontWeight.w700, color: couleur),
         ),
-        InkWell(
-            onTap: onPressed,
-            radius: 100,
-            child: Icon(
-              icon,
-              size: 30,
-              color: couleur,
-            )),
+        ElevatedButton(
+            onPressed: onPressed,
+            child: Text("Ajouter"),
+        ),
       ],
     );
   }
@@ -202,36 +206,33 @@ class roundedIcon extends StatelessWidget {
   }
 }
 
-class transactionInfo extends StatelessWidget {
-  const transactionInfo({
-    Key? key, required this.date, required this.headLine, required this.message, required this.icon,
+class TransactionBuilder extends StatelessWidget {
+  const TransactionBuilder({
+    Key? key, required this.transaction,
   }) : super(key: key);
+  final Transaction transaction;
 
-  final String date;
-  final String headLine;
-  final String message;
-  final IconData icon;
-
+  String getTransInfo(){
+    return transaction.metadata?["additionalInfo"]["payeeNote"]??"Dépôt Momo Epargne sur votre compte Momo Epargne";
+  }
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 6),
+      margin: const EdgeInsets.only(bottom: 15),
       width: double.infinity,
+      decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: BorderRadius.circular(15),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          roundedIcon(
-            icon: icon,
-            couleur: AppColor.gray,
-          ),
-          // Container(
-          //   height: 44,
-          //   width: 44,
-          //   decoration: simpleDecoration(colors: AppColor.gray , radius: 90),
-          //   child:null ,
-          // ),
-          SizedBox(
+          DepositPopup.transactionStatusBuilder(color: transaction.status.getColor(), iconData: transaction.status.getIcon(),size: 40),
+          const SizedBox(
             width: 10,
           ),
           Expanded(
@@ -240,36 +241,57 @@ class transactionInfo extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  headLine,
-                  style: TextStyle(
+                  transaction.type==TransactionType.deposit?"Dépôt":"Retrait",
+                  style: const TextStyle(
                       fontSize: 16,
-                      color: AppColor.textColor1,
                       fontWeight: FontWeight.w600),
                 ),
-                Text(
-                  message,
-                  maxLines: 3,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
-                ),
+                SizedBox(
+                  width: size.width*2/3,
+                  child: Text(
+                    getTransInfo(),
+                    maxLines: 3,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                )
               ],
             ),
           ),
-          Expanded(
-            flex: 2,
-            child: Text(
-              date,
-              style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w700),
-            ),
-          )
+         Column(
+           crossAxisAlignment: CrossAxisAlignment.end,
+           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+           children: [
+             Text(
+               formattedDateTime(DateTime.fromMillisecondsSinceEpoch(transaction.createdAt)),
+               style: TextStyle(
+                   fontSize: 10,
+                   color: Theme.of(context).textTheme.bodyText2?.color?.withOpacity(0.8),
+                   fontWeight: FontWeight.w700),
+             ),
+             const SizedBox(height: 10,),
+             Text(
+               transaction.type==TransactionType.deposit?'+${transaction.amount} CFA':'-${transaction.amount} CFA',
+               overflow: TextOverflow.ellipsis,
+               style: const TextStyle(
+                   fontSize: 14,
+                   // color: transaction.status.getColor(),
+                   fontWeight: FontWeight.w700
+               ),
+             ),
+             Text(
+               transaction.status.toIntl(),
+               overflow: TextOverflow.ellipsis,
+               style: TextStyle(
+                   fontSize: 10,
+                   color: transaction.status.getColor(),
+                   fontWeight: FontWeight.w700
+               ),
+             ),
+           ],
+         )
         ],
       ),
-      decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(color: Color.fromARGB(255, 228, 228, 228)))),
     );
   }
 }

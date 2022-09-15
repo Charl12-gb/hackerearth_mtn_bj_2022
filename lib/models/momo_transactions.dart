@@ -68,11 +68,11 @@ class MomoTransaction{
       currency: map['currency'] as String,
       financialTransactionId: map['financialTransactionId']??"",
       externalId: map['externalId'] as String,
-      payerMessage: map['payerMessage'] as String,
-      payeeNote: map['payeeNote'] as String,
+      payerMessage: map['payerMessage']??"",
+      payeeNote: map['payeeNote']??"",
       payer:  Payer.fromMap(map['payer']),
       status: map['status'] as String,
-      reason: map['reason'] as String,
+      reason: map['reason']??"",
     );
   }
 }

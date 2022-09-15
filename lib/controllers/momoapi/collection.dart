@@ -55,6 +55,7 @@ class Collection extends ApiRequest{
     };
 
     var response = await request(method: Http.get, url: url, headers: headers, queryParameters: queryParameters);
+
     var obj = MomoTransaction.fromMap(response.data);
 
     return obj;
@@ -88,9 +89,6 @@ class Collection extends ApiRequest{
       "amount": params['amount']
     };
 
-    print(data);
-    print(headers);
-
     var response = await request(method: Http.post, url: url, headers: headers, body: data);
 
     return uuid;
@@ -114,6 +112,27 @@ class Collection extends ApiRequest{
     var apikey = await createApikey();
     collectionApiSecret = apikey;
     return ApiUser(uuid: uuid, apiKey: apikey);
+  }
+
+  Future<Map<String, dynamic>?> getCustomerInfo({required String msisdn})async{
+    var url = "$baseUrl/collection/v1_0/accountholder/msisdn/$msisdn/basicuserinfo";
+
+    var token = await getToken();
+
+    var headers = {
+      "Authorization": "Bearer ${token.getToken()}",
+      "Ocp-Apim-Subscription-Key" : collectionPrimaryKey,
+      "X-Reference-Id": collectionUserId,
+      "X-Target-Environment": targetEnvironment,
+    };
+
+    var response = await request(method: Http.get, url: url, headers: headers);
+
+    if(response.data==null){
+      throw MomoApiError(message: "User not found");
+    }
+
+    return response.data;
   }
 
   Future<String> createApikey() async {
@@ -142,9 +161,6 @@ class Collection extends ApiRequest{
     return response;
   }
 
-  /// @param array|null|mixed $params The list of parameters to validate
-  ///
-  /// @throws \MomoApi\Error\MomoApiError if $params exists and is not an array
   _validateParams({params}) {
     if (params == null && !(params.runtimeType==List)) {
       var message = "You must pass an array as the first argument to MomoApi API method calls.  (HINT: an example call to create a charge would be: \"MomoApi\\Charge::create(['amount' => 100, 'currency' => 'usd', 'source' => 'tok_1234'])\")";

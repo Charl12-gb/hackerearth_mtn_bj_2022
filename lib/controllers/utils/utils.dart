@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'package:hackerearth_mtn_bj_2022/models/models.dart' as models;
+import 'package:intl/intl.dart';
 import 'package:phone_number/phone_number.dart';
 
 Future<List<dynamic>> processUserQuery(FirebaseFirestore instance, QuerySnapshot<Map<String, dynamic>> query, String usersCollectionName,) async {
@@ -14,6 +14,7 @@ Map<String, dynamic> processSimpleDocument(DocumentSnapshot<Map<String, dynamic>
   data['createdAt'] = data['createdAt']?.millisecondsSinceEpoch;
   data['id'] = doc.id;
   data['updatedAt'] = data['updatedAt']?.millisecondsSinceEpoch;
+  if(data['withdrawalDate']!=null) data['withdrawalDate'] = data['withdrawalDate']?.millisecondsSinceEpoch;
 
   return data;
 }
@@ -26,3 +27,7 @@ Future<bool> validatePhoneNumber(number) async {
   }
 }
 
+String formattedDateTime(DateTime dateTime){
+  String formattedDate = DateFormat.yMMMd().format(dateTime);
+  return formattedDate;
+}

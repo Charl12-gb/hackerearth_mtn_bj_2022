@@ -93,6 +93,8 @@ class _OPTScreenState extends State<OPTScreen> {
       await Future(() => UIBlock.unblock(context));
       Future(() => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Code incorrect!"),behavior: SnackBarBehavior.floating)));
     }).onError((error, stackTrace) {
+      debugPrint(error.toString());
+      debugPrintStack(stackTrace: stackTrace);
       UIBlock.unblock(context);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Une erreur s'est produite!"),behavior: SnackBarBehavior.floating));
     });

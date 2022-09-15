@@ -1,5 +1,7 @@
+import 'package:hackerearth_mtn_bj_2022/models/payer.dart';
+
 class Transfer{
-  final String payee;
+  final Payer payee;
   final String payeeNote;
   final String payerMessage;
   final String externalId;
@@ -17,7 +19,7 @@ class Transfer{
 
   Map<String, dynamic> toMap() {
     return {
-      'payee': this.payee,
+      'payee': this.payee.toMap(),
       'payeeNote': this.payeeNote,
       'payerMessage': this.payerMessage,
       'externalId': this.externalId,
@@ -28,9 +30,9 @@ class Transfer{
 
   factory Transfer.fromMap(Map<String, dynamic> map) {
     return Transfer(
-      payee: map['payee'] as String,
-      payeeNote: map['payeeNote'] as String,
-      payerMessage: map['payerMessage'] as String,
+      payee: Payer.fromMap(map['payee']),
+      payeeNote: map['payeeNote']??"",
+      payerMessage: map['payerMessage']??"",
       externalId: map['externalId'] as String,
       currency: map['currency'] as String,
       amount: map['amount'] as String,
@@ -38,7 +40,7 @@ class Transfer{
   }
 
   Transfer copyWith({
-    String? payee,
+    Payer? payee,
     String? payeeNote,
     String? payerMessage,
     String? externalId,

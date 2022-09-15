@@ -4,6 +4,7 @@ class Account{
   final String name;
   final double balance;
   final String description;
+  final bool  isActive;
   final int withdrawalDate;
   final int createdAt;
   final int updatedAt;
@@ -15,35 +16,12 @@ class Account{
     required this.name,
     required this.balance,
     required this.description,
+    required this.isActive,
     required this.withdrawalDate,
     required this.createdAt,
     required this.updatedAt,
     this.metadata,
   });
-
-  Account copyWith({
-    String? id,
-    String? userId,
-    String? name,
-    double? balance,
-    String? description,
-    int? withdrawalDate,
-    int? createdAt,
-    int? updatedAt,
-    Map<String, dynamic>? metadata,
-  }) {
-    return Account(
-      id: id ?? this.id,
-      userId: userId ?? this.userId,
-      name: name ?? this.name,
-      balance: balance ?? this.balance,
-      description: description ?? this.description,
-      withdrawalDate: withdrawalDate ?? this.withdrawalDate,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      metadata: metadata ?? this.metadata,
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return {
@@ -52,6 +30,7 @@ class Account{
       'name': this.name,
       'balance': this.balance,
       'description': this.description,
+      'isActive': this.isActive,
       'withdrawalDate': this.withdrawalDate,
       'createdAt': this.createdAt,
       'updatedAt': this.updatedAt,
@@ -66,10 +45,37 @@ class Account{
       name: map['name'] as String,
       balance: double.tryParse(map['balance'].toString())??0,
       description: map['description'] as String,
+      isActive: map['isActive'] as bool,
       withdrawalDate: map['withdrawalDate'] as int,
-      createdAt: map['createdAt'] as int,
-      updatedAt: map['updatedAt'] as int,
-      metadata: map['metadata'] as Map<String, dynamic>,
+      createdAt: map['createdAt']??DateTime.now().millisecondsSinceEpoch,
+      updatedAt: map['updatedAt']??DateTime.now().millisecondsSinceEpoch,
+      metadata: map['metadata'] as Map<String, dynamic>?,
+    );
+  }
+
+  Account copyWith({
+    String? id,
+    String? userId,
+    String? name,
+    double? balance,
+    String? description,
+    bool? isActive,
+    int? withdrawalDate,
+    int? createdAt,
+    int? updatedAt,
+    Map<String, dynamic>? metadata,
+  }) {
+    return Account(
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
+      name: name ?? this.name,
+      balance: balance ?? this.balance,
+      description: description ?? this.description,
+      isActive: isActive ?? this.isActive,
+      withdrawalDate: withdrawalDate ?? this.withdrawalDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      metadata: metadata ?? this.metadata,
     );
   }
 }

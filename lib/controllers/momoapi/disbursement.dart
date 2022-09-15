@@ -124,6 +124,22 @@ class Disbursement extends ApiRequest{
     return response.data["apiKey"];
   }
 
+  Future<ApiUser> getCustomerInfo({required String msisdn})async{
+    var url = "$baseUrl/disbursement/v1_0/accountholder/msisdn/$msisdn/basicuserinfo";
+
+    var token = await getToken();
+
+    var headers = {
+      'Authorization': 'Bearer ${token.getToken()}',
+      "Ocp-Apim-Subscription-Key" : disbursementPrimaryKey,
+      "X-Reference-Id": disbursementUserId,
+      "X-Target-Environment": targetEnvironment,
+    };
+
+    var response = await request(method: Http.get, url: url, headers: headers);
+
+    return response.data;
+  }
 
   isActive({required mobile, params = const []}) async {
     var token = await getToken();
@@ -142,10 +158,8 @@ class Disbursement extends ApiRequest{
     return response;
   }
 
-  /// @param array|null|mixed $params The list of parameters to validate
-  /// @throws \MomoApi\Error\MomoApiError if $params exists and is not an array
   _validateParams({params}) {
-    if (params && !(params.runtimeType==List)) {
+    if (params==null && !(params.runtimeType==List)) {
       var message = "You must pass an array as the first argument to MomoApi API method calls.  (HINT: an example call to create a charge would be: \"MomoApi\\Charge::create(['amount' => 100, 'currency' => 'usd', 'source' => 'tok_1234'])\")";
       throw MomoApiError(message: message);
     }

@@ -7,6 +7,7 @@ import 'package:hackerearth_mtn_bj_2022/models/models.dart';
 import 'package:username_gen/username_gen.dart';
 import 'package:uiblock/uiblock.dart';
 
+import '../controllers/momoapi/collection.dart';
 import '../controllers/utils/utils.dart';
 
 class Login extends StatefulWidget {
@@ -19,7 +20,6 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   final TextEditingController _phoneNumberFieldController = TextEditingController();
-
 
   @override
   void initState() {
@@ -54,11 +54,6 @@ class _LoginState extends State<Login> {
               // BTN
               appButton(
                   onPressed: () async {
-                    // await FirebaseCore.instance.ensureInitialized();
-                    // // var aId = await FirebaseCore.instance.createAccount(name: "Schooling", description: "To pay for my schooling", withdrawalDate: DateTime.now().add(const Duration(days: 356)));
-                    // Account account = await FirebaseCore.instance.getAccount("3kZx0sEvNNL86lm80Onz");
-                    // await FirebaseCore.instance.createTransaction(account: account, amount: 400, type: TransactionType.deposit);
-                    // return;
                     await login();
                   },
                 text: "Confirmer",
@@ -92,7 +87,7 @@ class _LoginState extends State<Login> {
       UIBlock.unblock(context);
       Future(() => Navigator.of(context).push(MaterialPageRoute(builder: (context) => OPTScreen(verificationId: id, onVerified: () async {
         if(!hasUser){
-          await FirebaseCore.instance.createUserInFirestore(name: UsernameGen().generate(), phoneNumber: number);
+          await FirebaseCore.instance.createUserInFirestore(phoneNumber: number);
         }
       },
         phoneNumber: number,
@@ -102,6 +97,8 @@ class _LoginState extends State<Login> {
       Future(() => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Echec de vérification!"),behavior: SnackBarBehavior.floating)));
     }).onError((error, stackTrace) {
       UIBlock.unblock(context);
+      debugPrint(error.toString());
+      debugPrintStack(stackTrace: stackTrace);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Une erreur s'est produite!"),behavior: SnackBarBehavior.floating));
     });
   }

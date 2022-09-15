@@ -4,10 +4,13 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/momoapi/collection.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/momoapi/disbursement.dart';
+import 'package:hackerearth_mtn_bj_2022/controllers/utils/extensions.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/utils/utils.dart';
+import 'package:hackerearth_mtn_bj_2022/models/account.dart';
 import 'package:hackerearth_mtn_bj_2022/models/enums.dart';
 
 import 'package:hackerearth_mtn_bj_2022/models/models.dart' as models;
+import 'package:username_gen/username_gen.dart';
 import 'config.dart';
 
 /// Provides access to Firebase chat data. Singleton, use
@@ -99,8 +102,17 @@ class FirebaseCore{
     return success;
   }
 
-  Future<void> createUserInFirestore({required String name, UserRole role = UserRole.user, required String phoneNumber, bool isActive = true, Map<String, dynamic> metadata = const {},}) async {
+  Future<void> createUserInFirestore({UserRole role = UserRole.user, required String phoneNumber, bool isActive = true, Map<String, dynamic>? metadata}) async {
     authCheck();
+    apiSettings ??= await getApiSetting();
+    assert(apiSettings!=null);
+
+    var client = Collection(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, collectionPrimaryKey: apiSettings?.collectionPrimaryKey, collectionUserId: apiSettings?.collectionUserId, collectionApiSecret: apiSettings?.collectionApiSecret, callbackUrl: apiSettings!.callbackHost);
+
+    var userInfo = await client.getCustomerInfo(msisdn: phoneNumber.substring("+229".length));
+    var name = userInfo?["name"]??UsernameGen().generate();
+    metadata = metadata??{};
+    metadata.addAll({"info": userInfo});
 
     await getFirebaseFirestore().collection(config.usersCollectionName).doc(firebaseUser!.uid).set({
       'createdAt': FieldValue.serverTimestamp(),
@@ -144,19 +156,30 @@ class FirebaseCore{
   }
 
   ///Create transaction in firebase
-  Future<String> createTransaction({required models.Account account, required double amount, required models.TransactionType type, String? payeeNote,String? payerMessage, Map<String, dynamic> metadata = const {}}) async {
+  Future<Map<String, dynamic>> createTransaction({required models.Account account, required double amount, required models.TransactionType type, String? payeeNote,String? payerMessage, Map<String, dynamic>? metadata}) async {
     authCheck();
 
     assert(apiSettings!=null);
-    var client = Collection(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, collectionPrimaryKey: apiSettings?.collectionPrimaryKey, collectionUserId: apiSettings?.collectionUserId, collectionApiSecret: apiSettings?.collectionApiSecret, callbackUrl: apiSettings!.callbackHost);
-
     var doc = getFirebaseFirestore().collection(config.transactionCollectionName).doc();
+    String uuid;
+    dynamic client;
 
-    var params = {'mobile': currentUser?.phoneNumber.substring("+229".length), 'payee_note' : payeeNote??"Dépôt Momo Epargne sur votre compte : ${account.name}", 'payer_message' : payerMessage??account.description, 'external_id' : doc.id, 'currency' : apiSettings?.currency, 'amount' : amount};
+    switch(type){
+      case TransactionType.deposit:
+        client = Collection(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, collectionPrimaryKey: apiSettings?.collectionPrimaryKey, collectionUserId: apiSettings?.collectionUserId, collectionApiSecret: apiSettings?.collectionApiSecret, callbackUrl: apiSettings!.callbackHost);
+        var params = {'mobile': currentUser?.phoneNumber.substring("+229".length), 'payeeNote' : payeeNote??"Vous avez epargné votre compte: ${account.name}", 'payerMessage' : payerMessage??account.description, 'externalId' : doc.id, 'currency' : apiSettings?.currency, 'amount' : amount};
+        uuid = await client.requestToPay(params: params);
+        break;
+      case TransactionType.withdrawal:
+        client = Disbursement(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, disbursementPrimaryKey: apiSettings?.disbursementPrimaryKey, disbursementUserId: apiSettings?.disbursementUserId, disbursementApiSecret: apiSettings?.disbursementApiSecret, callbackUrl: apiSettings!.callbackHost);
+        var params = {'mobile': currentUser?.phoneNumber.substring("+229".length), 'payeeNote' : payeeNote??"Vous avez retirer $amount CFA de votre compte: ${account.name}", 'payerMessage' : payerMessage??account.description, 'externalId' : doc.id, 'currency' : apiSettings?.currency, 'amount' : amount};
+        uuid = await client.transfer(params: params);
+        break;
+    }
 
-    var uuid = await client.requestToPay(params: params);
     var t = await client.getTransaction(transactionId: uuid);
 
+    metadata = metadata??{};
     metadata.addAll({"additionalInfo":t.toMap()});
 
     await getFirebaseFirestore().collection(config.transactionCollectionName).doc(doc.id).set({
@@ -164,7 +187,7 @@ class FirebaseCore{
       'uuid': uuid,
       'accountId': account.id,
       'amount': amount,
-      'status': models.TransactionStatus.pending,
+      'status': models.TransactionStatus.pending.name,
       'type': type.name,
       'currency': apiSettings?.currency,
       'createdAt': FieldValue.serverTimestamp(),
@@ -172,7 +195,13 @@ class FirebaseCore{
       'metadata': metadata,
     });
 
-    return doc.id;
+    if(type==TransactionType.withdrawal){
+      var m = account.metadata??{};
+      m.addAll({"freezeAccount": true, "lastBalance": account.balance});
+      account = account.copyWith(metadata: m, balance: 0);
+      await updateAccount(account);
+    }
+    return {"id":doc.id, "uuid":uuid};
   }
 
   ///Update transaction
@@ -193,27 +222,62 @@ class FirebaseCore{
     return transaction;
   }
 
+  Stream<TransactionStatus> validateNewTransaction({required String transactionUuid, required String transactionId}) async* {
+
+    var c = Collection(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, collectionPrimaryKey: apiSettings!.collectionPrimaryKey, collectionUserId: apiSettings!.collectionUserId, collectionApiSecret: apiSettings!.collectionApiSecret, callbackUrl: apiSettings!.callbackHost);
+
+    yield* Stream.periodic(const Duration(seconds: 10),(_){
+     return c.getTransaction(transactionId: transactionUuid);
+    }).asyncMap((event) async {
+      var t = await event;
+      print(t.toMap());
+      var s = TransactionStatusExtension.fromString(t.status.toLowerCase());
+      if(s!=TransactionStatus.pending){
+        await getTransaction(transactionId).then((value) async {
+          print(value.toMap());
+          if(value.status!=TransactionStatus.pending)return;
+          var v1 = value.copyWith(status: s);
+          await getAccount(v1.accountId).then((value1) async {
+            print(value1.toMap());
+            var v2 = value1.copyWith(isActive: true, balance: value1.balance+v1.amount);
+            await updateTransaction(v1);
+            await updateAccount(v2);
+          });
+        });
+      }
+      return s;
+    });
+  }
+
   ///Get current user transactions
   Query getTransactionsQuery() {
     authCheck();
-    return getFirebaseFirestore().collection(config.transactionCollectionName).where("userId", isEqualTo: firebaseUser?.uid);
+    return getFirebaseFirestore().collection(config.transactionCollectionName).where("userId", isEqualTo: firebaseUser?.uid).orderBy("createdAt", descending: true);
   }
 
   /// Create Saving Account
-  Future<String> createAccount({required String name, required String description, required DateTime withdrawalDate,Map<String, dynamic> metadata = const {}})async {
+  Future<Map<String, dynamic>> createAccount({required String name, required String description, required double amount, required DateTime withdrawalDate,Map<String, dynamic> metadata = const {}, required Function(bool created) onTransactionCreated })async {
     authCheck();
     var doc = getFirebaseFirestore().collection(config.accountCollectionName).doc();
+
     await getFirebaseFirestore().collection(config.accountCollectionName).doc(doc.id).set({
       'userId': firebaseUser?.uid,
       'name': name,
       'description': description,
       'withdrawalDate': Timestamp.fromDate(withdrawalDate),
       'balance': 0,
+      "isActive": false,
       'createdAt': FieldValue.serverTimestamp(),
       'updatedAt':FieldValue.serverTimestamp(),
       'metadata': metadata,
     });
-    return doc.id;
+
+    var a = Account(id: doc.id, userId: firebaseUser!.uid, name: name, balance: amount, description: description, isActive: false, withdrawalDate: withdrawalDate.millisecondsSinceEpoch, createdAt: 1, updatedAt: 0);
+    var t = await createTransaction(account: a, amount: amount, type: TransactionType.deposit);
+
+    onTransactionCreated.call(true);
+
+    return {"accountId":doc.id, "transaction": t};
   }
 
   ///Update transaction
@@ -223,13 +287,13 @@ class FirebaseCore{
     accountMap.removeWhere((key, value) => key=="createdAt" || key=="withdrawalDate" || key=="userId" || key=="id");
     accountMap['updatedAt'] = FieldValue.serverTimestamp();
 
-    await getFirebaseFirestore().collection(config.transactionCollectionName).doc(account.id).update(accountMap);
+    await getFirebaseFirestore().collection(config.accountCollectionName).doc(account.id).update(accountMap);
   }
 
   /// Get current user accounts
   Query getAccountsQuery(){
     authCheck();
-    return getFirebaseFirestore().collection(config.accountCollectionName).where("userId", isEqualTo: firebaseUser?.uid);
+    return getFirebaseFirestore().collection(config.accountCollectionName).where("userId", isEqualTo: firebaseUser?.uid).where("isActive", isEqualTo: true).orderBy("createdAt", descending: true);;
   }
 
   ///Get one transaction
@@ -237,7 +301,6 @@ class FirebaseCore{
     authCheck();
     var doc = await getFirebaseFirestore().collection(config.accountCollectionName).doc(id).get();
     var map = processSimpleDocument(doc);
-    map["withdrawalDate"] = map["withdrawalDate"]?.millisecondsSinceEpoch;
     final account = models.Account.fromMap(map);
     return account;
   }
@@ -290,7 +353,30 @@ class FirebaseCore{
     return apiSettings;
   }
 
-  ///Create Api user
+  ///Get user Momo epagne balance
+  Stream<Map<String, dynamic>> getUserMomoEpagneBalance() {
+    return getAccountsQuery().snapshots().map((snapshot){
+      return snapshot.docs.fold<Map<String, dynamic>>({"balance":0, "availableWithdrawals":0}, (previousValue, doc){
+        final data = doc.data() as Map<String, dynamic>;
+        var balance = double.tryParse('${previousValue["balance"] + data["balance"]}')??0;
+        var withdrawalDate = data["withdrawalDate"].millisecondsSinceEpoch;
+        var availableWithdrawals = previousValue["availableWithdrawals"];
+        if(withdrawalDate <= DateTime.now().millisecondsSinceEpoch){
+          availableWithdrawals++;
+        }
+        return {"balance":balance, "availableWithdrawals":availableWithdrawals};
+      });
+    });
+  }
 
+  // ///Get available withdrawals
+  // Stream<int> getAvailableWithdrawals() {
+  //   return getAccountsQuery().snapshots().map((snapshot){
+  //     return snapshot.docs.fold<double>(0, (previousValue, doc){
+  //       final data = doc.data() as Map<String, dynamic>;
+  //       return double.tryParse('${previousValue + data["balance"]}')??0;
+  //     });
+  //   });
+  // }
 
 }

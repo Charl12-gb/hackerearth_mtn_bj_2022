@@ -1,3 +1,5 @@
+import 'package:hackerearth_mtn_bj_2022/controllers/utils/extensions.dart';
+
 import 'enums.dart';
 
 class Transaction{
@@ -63,8 +65,8 @@ class Transaction{
       'userId': this.userId,
       'accountId': this.accountId,
       'amount': this.amount,
-      'status': this.status,
-      'type': this.type,
+      'status': this.status.name,
+      'type': this.type.name,
       'createdAt': this.createdAt,
       'updatedAt': this.updatedAt,
       'metadata': this.metadata,
@@ -79,8 +81,8 @@ class Transaction{
       userId: map['userId'] as String,
       accountId: map['accountId'] as String,
       amount: map['amount'] as double,
-      status: map['status'] as TransactionStatus,
-      type: map['type'] as TransactionType,
+      status: TransactionStatusExtension.fromString(map['status']) ,
+      type:  TransactionTypeExtension.fromString(map['type']),
       createdAt: map['createdAt'] as int,
       updatedAt: map['updatedAt'] as int,
       metadata: map['metadata'] as Map<String, dynamic>,
