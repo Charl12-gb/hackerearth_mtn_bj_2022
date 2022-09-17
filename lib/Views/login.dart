@@ -41,7 +41,6 @@ class _LoginState extends State<Login> {
                 style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w600,
-                    color: AppColor.textColor1
                     ),
               ),
               const Spacer(),

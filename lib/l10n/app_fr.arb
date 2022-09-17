@@ -113,81 +113,81 @@
     "description": ""
   },
   "compteBeforeName": "Sous compte",
-  "@signOut": {
+  "@compteBeforeName": {
     "description": ""
   },
   "msgCreateCompte": "Crée un nouveau sous compte\n pour épargner",
-  "@signOut": {
+  "@msgCreateCompte": {
     "description": ""
   },
   "inputText": "Saisissez le nom du sous compte *",
-   "@signOut": {
+  "@inputText": {
     "description": ""
   },
   "placeName": "Nom",
-  "@signOut": {
+  "@placeName": {
     "description": ""
   },
   "dateText": "Durée d'épargne *",
-  "@signOut": {
+  "@dateText": {
     "description": ""
   },
   "montantText": "Montant *",
-  "@signOut": {
+  "@montantText": {
     "description": ""
   },
   "amountDesc": "Montant minimum {minimumSold} CFA obligatoire pour activer le compte.",
-  "@signOut": {
-    "description": "",
+  "@amountDesc": {
     "placeholders": {
-        "minimumSold": {
-            "type": "double"
-        }
-     }
+      "minimumSold": {
+        "type": "double",
+        "format": "currency",
+        "example": "1000.00 CFA"
+      }
+    }
   },
   "btnText": "Soumettre",
-    "@signOut": {
-        "description": ""
+  "@btnText": {
+    "description": ""
   },
   "fieldAlert": "Veuillez remplir tous les champs requise",
-    "@signOut": {
-        "description": ""
+  "@fieldAlert": {
+    "description": ""
   },
   "amountError": "Montant invalide",
-    "@signOut": {
-        "description": ""
+  "@amountError": {
+    "description": ""
   },
   "errorMsg": "Une erreur est survenue!",
-    "@signOut": {
-        "description": ""
+  "@errorMsg": {
+    "description": ""
   },
   "codeInputMsg": "Saisissez le code de \n confirmation",
-    "@signOut": {
-        "description": ""
+  "@codeInputMsg": {
+    "description": ""
   },
   "codeConfiMsg": "Entrez le code à 6 chiffre que nous avons envoyé à",
-    "@signOut": {
-        "description": ""
+  "@codeConfiMsg": {
+    "description": ""
   },
   "waitMsg": "En attente de confirmation 00 :",
-    "@signOut": {
-        "description": ""
+  "@waitMsg": {
+    "description": ""
   },
   "btnConfirm": "Confirmer",
-    "@signOut": {
-        "description": ""
+  "@btnConfirm": {
+    "description": ""
   },
   "incorrectCodeMsg": "Code incorrect!",
-    "@signOut": {
-        "description": ""
+  "@incorrectCodeMsg": {
+    "description": ""
   },
   "errorProduit": "Une erreur s'est produite!",
-    "@signOut": {
-        "description": ""
+  "@errorProduit": {
+    "description": ""
   },
-  "aboutInfo": "MoMo Epargne est une application qui permet aux clients d’épargner de l’argent sur leur compte d’épargne Momo.
-                Plutôt que les clients laissent leur économie sur leur compte Momo où ils risquent de faire des dépenses non contrôlées, Momo Épargne leur donne la possibilité d’épargner leur argent qu’ils jugent utiliser plus tard, pour financer des projets personnels; anticiper les dépenses imprévues, etc.",
-    "@signOut": {
-        "description": ""
+  "aboutInfo": "MoMo Epargne est une application qui permet aux clients d’épargner de l’argent sur leur compte d’épargne Momo.Plutôt que les clients laissent leur économie sur leur compte Momo où ils risquent de faire des dépenses non contrôlées, Momo Épargne leur donne la possibilité d’épargner leur argent qu’ils jugent utiliser plus tard, pour financer des projets personnels; anticiper les dépenses imprévues, etc.",
+  "@aboutInfo": {
+    "description": ""
   }
 }

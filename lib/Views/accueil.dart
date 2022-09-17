@@ -84,9 +84,18 @@ class _AccueilState extends State<Accueil> {
           ),
           Text(username, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
           Text(AppLocalizations.of(context)!.momoBalance, style: const TextStyle(fontSize: 15),),
-          Text(
-            "$momoBalance $currency",
-            style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "***** ",
+                style: TextStyle(fontWeight: FontWeight.w700, fontSize: 20),
+              ),
+              Text(
+                currency,
+                style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
+              ),
+            ],
           ),
           const SizedBox(
             height: 25,
@@ -101,12 +110,25 @@ class _AccueilState extends State<Accueil> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(AppLocalizations.of(context)!.yourAccount,),
-                TextButton(
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     Navigator.pushNamed(context, SousCompte.name);
                   },
-                  child: Text(AppLocalizations.of(context)!.add),
+                  child: Container(
+                    padding: const EdgeInsets.only(top: 5, bottom: 5, left: 15, right: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color:  AppColor.primaryColor,
+                    ),
+                    child: Text(AppLocalizations.of(context)!.add, style: const TextStyle(fontWeight: FontWeight.w500),),
+                  ),
                 ),
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.pushNamed(context, SousCompte.name);
+                //   },
+                //   child: Text(AppLocalizations.of(context)!.add),
+                // ),
               ],
             ),
           ),
@@ -150,7 +172,7 @@ class BoardInfo extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const roundedIcon(couleur: AppColor.gray, icon: Icons.account_balance_wallet),
+                        roundedIcon(couleur: Colors.black.withOpacity(0.2), icon: Icons.account_balance_wallet),
                         const SizedBox(
                           width: 10,
                         ),

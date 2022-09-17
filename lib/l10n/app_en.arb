@@ -44,7 +44,7 @@
   "@welcomeTo": {
     "description": ""
   },
-  "welcomeToAddNumInfo": "Enter your phone number to authenticate with Momo Epargne",
+  "welcomeToAddNumInfo": "Enter your phone number to log in to Momo Epargne",
   "@welcomeToAddNumInfo": {
     "description": ""
   },
@@ -113,81 +113,82 @@
     "description": ""
   },
   "compteBeforeName": "Under Account",
-  "@signOut": {
+  "@compteBeforeName": {
     "description": ""
   },
   "msgCreateCompte": "Create a new sub account\n to thrift",
-  "@signOut": {
+  "@msgCreateCompte": {
     "description": ""
   },
   "inputText": "Enter the name of the sub-account *",
-  "@signOut": {
+  "@inputText": {
     "description": ""
   },
   "placeName": "Name",
-  "@signOut": {
+  "@placeName": {
     "description": ""
   },
   "dateText": "Période d'épargne *",
-  "@signOut": {
+  "@dateText": {
     "description": ""
   },
   "montantText": "Amount *",
-  "@signOut": {
+  "@montantText": {
     "description": ""
   },
   "amountDesc": "Minimum amount {minimumSold} CFA required to activate the account.",
-   "@signOut": {
+  "@amountDesc": {
     "description": "",
     "placeholders": {
-        "minimumSold": {
-            "type": "double"
-        }
+      "minimumSold": {
+        "type": "double",
+        "format": "currency",
+        "example": "1000.00 CFA"
+      }
     }
   },
   "btnText": "Submit",
-   "@signOut": {
-     "description": ""
+  "@btnText": {
+    "description": ""
   },
   "fieldAlert": "Please complete all required fields",
-   "@signOut": {
-     "description": ""
+  "@fieldAlert": {
+    "description": ""
   },
   "amountError": "Invalid amount",
-   "@signOut": {
-     "description": ""
+  "@amountError": {
+    "description": ""
   },
   "errorMsg": "An error has occurred!",
-   "@signOut": {
-     "description": ""
+  "@errorMsg": {
+    "description": ""
   },
   "codeInputMsg": "Enter the \n confirmation code",
-   "@signOut": {
-     "description": ""
+  "@codeInputMsg": {
+    "description": ""
   },
   "codeConfiMsg": "Enter the six (06) digit code we sent to",
-   "@signOut": {
-     "description": ""
+  "@codeConfiMsg": {
+    "description": ""
   },
   "waitMsg": "Waiting for confirmation 00 :",
-   "@signOut": {
-     "description": ""
+  "@waitMsg": {
+    "description": ""
   },
   "btnConfirm": "Confirm",
-   "@signOut": {
-     "description": ""
+  "@btnConfirm": {
+    "description": ""
   },
   "incorrectCodeMsg": "Wrong code!",
-   "@signOut": {
-     "description": ""
+  "@incorrectCodeMsg": {
+    "description": ""
   },
   "errorProduit": "An error has occurred!",
-   "@signOut": {
-     "description": ""
+  "@errorProduit": {
+    "description": ""
   },
-  "aboutInfo": "MoMo Epargne is an application that allows customers to save money in their Momo savings account.
-                Rather than customers leaving their savings in their Momo account where they risk making uncontrolled expenses, Momo Epargne gives them the possibility of saving their money which they consider to be used later, to finance personal projects; anticipating unforeseen expenses, etc.",
-   "@signOut": {
-     "description": ""
+  "aboutInfo": "MoMo Epargne is an application that allows customers to save money in their Momo savings account.Rather than customers leaving their savings in their Momo account where they risk making uncontrolled expenses, Momo Epargne gives them the possibility of saving their money which they consider to be used later, to finance personal projects; anticipating unforeseen expenses, etc.",
+  "@aboutInfo": {
+    "description": ""
   }
 }

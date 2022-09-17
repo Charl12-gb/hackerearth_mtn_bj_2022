@@ -40,13 +40,11 @@ class _OPTScreenState extends State<OPTScreen> {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
-                    color: AppColor.textColor1,
                     fontSize: 22),
               ),
               Text(
                 AppLocalizations.of(context)!.codeConfiMsg,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColor.textColor2),
               ),
               Text(widget.phoneNumber.replaceRange(6, widget.phoneNumber.length, "********"),
                 textAlign: TextAlign.center,
@@ -62,11 +60,12 @@ class _OPTScreenState extends State<OPTScreen> {
                 },
                 onEditing: (value) {},
               ),
-              TweenAnimationBuilder(
-                tween: Tween(begin: 30.0 , end: 0),
-                duration: const Duration(seconds: 30),
-                builder: (context, sec, child) => Text("Waiting for confirmation 00 : ${ num.parse(sec.toString()).toInt() }") ,
-              ),
+
+              // TweenAnimationBuilder(
+              //   tween: Tween(begin: 30.0 , end: 0),
+              //   duration: const Duration(seconds: 30),
+              //   builder: (context, sec, child) => Text("Waiting for confirmation 00 : ${ num.parse(sec.toString()).toInt() }") ,
+              // ),
 
               const Spacer(flex: 1,),
               appButton(

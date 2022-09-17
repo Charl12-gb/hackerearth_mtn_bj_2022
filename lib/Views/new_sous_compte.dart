@@ -173,7 +173,7 @@ class _SousCompteFormState extends State<SousCompteForm> {
             const SizedBox(
               height: 5,
             ),
-            Text(AppLocalizations.of(context)!.amountDesc, style: TextStyle(fontSize: 10),),
+            Text(AppLocalizations.of(context)!.amountDesc(200), style: const TextStyle(fontSize: 10),),
           ],
         ),
         const SizedBox(

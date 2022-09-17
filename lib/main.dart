@@ -11,8 +11,6 @@ import 'package:hackerearth_mtn_bj_2022/routes.dart';
 import 'Views/home.dart';
 import 'Views/theme_provider.dart';
 import 'firebase_options.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

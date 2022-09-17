@@ -2,7 +2,6 @@ import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hackerearth_mtn_bj_2022/Views/home.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -64,53 +63,6 @@ class _SettingsState extends State<Settings> {
             ),
             const SizedBox(
               height: 10,
-            ),
-            buildAccountOptionRow(context, AppLocalizations.of(context)!.language,(stateSet){
-              return [
-                InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {
-                    stateSet.call(() {
-                    },);
-                  },
-                  child: Row(
-                    children: [
-                      Radio(
-                        fillColor: MaterialStateProperty.resolveWith((states) => AppColor.primaryColor),
-                        value: 0,
-                        onChanged: (int? value) {
-                          stateSet.call(() {
-                          },);
-                        }, groupValue: 1,
-                      ),
-                      Text(AppLocalizations.of(context)!.english),
-                    ],
-                  ),
-                ),
-                InkWell(
-                  borderRadius: BorderRadius.circular(10),
-                  onTap: () {
-                    stateSet.call(() {
-                    },);
-                  },
-                  child: Row(
-                    children: [
-                      Radio(
-                        fillColor: MaterialStateProperty.resolveWith((states) => AppColor.primaryColor),
-                        value: 1,
-                        onChanged: (int? value) {
-                          stateSet.call(() {
-                          },);
-                        }, groupValue: 1,
-                      ),
-                      Text(AppLocalizations.of(context)!.french),
-                    ],
-                  ),
-                ),
-              ];
-            }),
-            const SizedBox(
-              height: 15,
             ),
             buildAccountOptionRow(context, AppLocalizations.of(context)!.darkMode, (stateSet){
               return [
@@ -193,7 +145,7 @@ class _SettingsState extends State<Settings> {
             ),
             buildAccountOptionRow(context, AppLocalizations.of(context)!.about, (stateSet){
               return [
-                const Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis id consequat orci. Cras venenatis id urna at mollis. Suspendisse eu quam quam. Morbi nec ornare quam. Phasellus aliquam scelerisque gravida. Praesent sed ultricies felis. Sed a eros in ligula congue venenatis et non eros. Morbi magna tellus, sagittis quis ex scelerisque, facilisis sollicitudin urna.In blandit lorem eros, id interdum erat mattis eget. Vestibulum pretium elementum ante. In lectus felis, sagittis sed est ac, mollis laoreet lectus. Donec auctor odio sit amet justo tincidunt, quis interdum felis rutrum. Praesent finibus id est a blandit. Nam ut dolor finibus, tristique nibh ut, blandit elit. Maecenas fermentum semper urna sodales fringilla. Nulla gravida, massa eu finibus rutrum, metus nulla aliquet eros, sed facilisis sapien orci eget tortor. Ut vel nibh et enim lobortis accumsan. Pellentesque laoreet diam id nibh interdum, in rutrum elit facilisis. Sed in porttitor lectus, non commodo magna. Maecenas condimentum urna nec nunc pretium, et rhoncus ligula fermentum. Curabitur consequat pellentesque dolor, vel vehicula ligula aliquet id. Etiam egestas feugiat ante sed fermentum.")
+                Text(AppLocalizations.of(context)!.aboutInfo)
               ];
             }),
             const SizedBox(
@@ -275,7 +227,7 @@ class _SettingsState extends State<Settings> {
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: Colors.grey[500],
+                color: Colors.grey[700],
               ),
             ),
             const Icon(
