@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/firebase_core.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/utils/extensions.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uiblock/uiblock.dart';
 
 import '../models/enums.dart';
@@ -20,7 +21,7 @@ class SousCompte extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Sous compte', style: TextStyle(color: Theme.of(context).textTheme.bodyText2?.color),),
+        title: Text(AppLocalizations.of(context)!.compteBeforeName, style: TextStyle(color: Theme.of(context).textTheme.bodyText2?.color),),
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -33,12 +34,12 @@ class SousCompte extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: const [
+                  children: [
                     SizedBox(
                       height: 20,
                     ),
                     Text(
-                      "Crée un nouveau sous compte\n pour épargner",
+                      AppLocalizations.of(context)!.msgCreateCompte,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -86,7 +87,7 @@ class _SousCompteFormState extends State<SousCompteForm> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Saisissez le nom du sous compte *"),
+            Text(AppLocalizations.of(context)!.inputText),
             const SizedBox(
               height: 8,
             ),
@@ -95,7 +96,7 @@ class _SousCompteFormState extends State<SousCompteForm> {
               keyboardType: TextInputType.name,
               maxLength: 25,
               decoration: InputDecoration(
-                  hintText: "nom", // la raison
+                  hintText: AppLocalizations.of(context)!.placeName, // la raison
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
                   enabledBorder: outlineInputBorder,
@@ -117,7 +118,7 @@ class _SousCompteFormState extends State<SousCompteForm> {
               controller: _descriptionController,
               keyboardType: TextInputType.name,
               decoration: InputDecoration(
-                  hintText: "description", // la raison
+                  hintText: "Description", // la raison
                   contentPadding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 6),
                   enabledBorder: outlineInputBorder,
@@ -131,7 +132,7 @@ class _SousCompteFormState extends State<SousCompteForm> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text("Durée d'épargne *"),
+            Text(AppLocalizations.of(context)!.dateText),
             const SizedBox(
               height: 8,
             ),
@@ -157,7 +158,7 @@ class _SousCompteFormState extends State<SousCompteForm> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Montant *"),
+            Text(AppLocalizations.of(context)!.montantText),
             const SizedBox(
               height: 8,
             ),
@@ -172,7 +173,7 @@ class _SousCompteFormState extends State<SousCompteForm> {
             const SizedBox(
               height: 5,
             ),
-            Text("Montant minimum $minimumSold CFA obligatoire pour activer le compte.", style: TextStyle(fontSize: 10),),
+            Text(AppLocalizations.of(context)!.amountDesc, style: TextStyle(fontSize: 10),),
           ],
         ),
         const SizedBox(
@@ -182,7 +183,7 @@ class _SousCompteFormState extends State<SousCompteForm> {
             onPressed: () {
               createSousCompte();
             },
-            text: "soumettre",
+            text: AppLocalizations.of(context)!.btnText,
             backgroundColor: AppColor.primaryColor)
       ]),
     );
@@ -200,12 +201,12 @@ class _SousCompteFormState extends State<SousCompteForm> {
     description = description.replaceAll("  ", " ");
 
     if(name.trim().isEmpty || amount.trim().isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Veuillez remplir tous les champs requise"), behavior: SnackBarBehavior.floating,));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.fieldAlert), behavior: SnackBarBehavior.floating,));
       return;
     }
     var d = double.tryParse(amount);
     if(d==null || d<minimumSold){
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Montant invalide"), behavior: SnackBarBehavior.floating,));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.amountError), behavior: SnackBarBehavior.floating,));
       return;
     }
 
@@ -221,7 +222,7 @@ class _SousCompteFormState extends State<SousCompteForm> {
       debugPrint(error.toString());
       debugPrintStack(stackTrace: stackTrace);
       UIBlock.unblock(context);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Une erreur est survenue!"), behavior: SnackBarBehavior.floating,));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorMsg), behavior: SnackBarBehavior.floating,));
       return null;
     });
   }

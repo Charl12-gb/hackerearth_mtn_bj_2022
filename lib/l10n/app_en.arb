@@ -111,5 +111,83 @@
   "signOut": "Sign out",
   "@signOut": {
     "description": ""
+  },
+  "compteBeforeName": "Under Account",
+  "@signOut": {
+    "description": ""
+  },
+  "msgCreateCompte": "Create a new sub account\n to thrift",
+  "@signOut": {
+    "description": ""
+  },
+  "inputText": "Enter the name of the sub-account *",
+  "@signOut": {
+    "description": ""
+  },
+  "placeName": "Name",
+  "@signOut": {
+    "description": ""
+  },
+  "dateText": "Période d'épargne *",
+  "@signOut": {
+    "description": ""
+  },
+  "montantText": "Amount *",
+  "@signOut": {
+    "description": ""
+  },
+  "amountDesc": "Minimum amount {minimumSold} CFA required to activate the account.",
+   "@signOut": {
+    "description": "",
+    "placeholders": {
+        "minimumSold": {
+            "type": "double"
+        }
+    }
+  },
+  "btnText": "Submit",
+   "@signOut": {
+     "description": ""
+  },
+  "fieldAlert": "Please complete all required fields",
+   "@signOut": {
+     "description": ""
+  },
+  "amountError": "Invalid amount",
+   "@signOut": {
+     "description": ""
+  },
+  "errorMsg": "An error has occurred!",
+   "@signOut": {
+     "description": ""
+  },
+  "codeInputMsg": "Enter the \n confirmation code",
+   "@signOut": {
+     "description": ""
+  },
+  "codeConfiMsg": "Enter the six (06) digit code we sent to",
+   "@signOut": {
+     "description": ""
+  },
+  "waitMsg": "Waiting for confirmation 00 :",
+   "@signOut": {
+     "description": ""
+  },
+  "btnConfirm": "Confirm",
+   "@signOut": {
+     "description": ""
+  },
+  "incorrectCodeMsg": "Wrong code!",
+   "@signOut": {
+     "description": ""
+  },
+  "errorProduit": "An error has occurred!",
+   "@signOut": {
+     "description": ""
+  },
+  "aboutInfo": "MoMo Epargne is an application that allows customers to save money in their Momo savings account.
+                Rather than customers leaving their savings in their Momo account where they risk making uncontrolled expenses, Momo Epargne gives them the possibility of saving their money which they consider to be used later, to finance personal projects; anticipating unforeseen expenses, etc.",
+   "@signOut": {
+     "description": ""
   }
 }
