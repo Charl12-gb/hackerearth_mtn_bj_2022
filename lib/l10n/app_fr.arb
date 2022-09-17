@@ -111,5 +111,83 @@
   "signOut": "Se déconnecter",
   "@signOut": {
     "description": ""
+  },
+  "compteBeforeName": "Sous compte",
+  "@signOut": {
+    "description": ""
+  },
+  "msgCreateCompte": "Crée un nouveau sous compte\n pour épargner",
+  "@signOut": {
+    "description": ""
+  },
+  "inputText": "Saisissez le nom du sous compte *",
+   "@signOut": {
+    "description": ""
+  },
+  "placeName": "Nom",
+  "@signOut": {
+    "description": ""
+  },
+  "dateText": "Durée d'épargne *",
+  "@signOut": {
+    "description": ""
+  },
+  "montantText": "Montant *",
+  "@signOut": {
+    "description": ""
+  },
+  "amountDesc": "Montant minimum {minimumSold} CFA obligatoire pour activer le compte.",
+  "@signOut": {
+    "description": "",
+    "placeholders": {
+        "minimumSold": {
+            "type": "double"
+        }
+     }
+  },
+  "btnText": "Soumettre",
+    "@signOut": {
+        "description": ""
+  },
+  "fieldAlert": "Veuillez remplir tous les champs requise",
+    "@signOut": {
+        "description": ""
+  },
+  "amountError": "Montant invalide",
+    "@signOut": {
+        "description": ""
+  },
+  "errorMsg": "Une erreur est survenue!",
+    "@signOut": {
+        "description": ""
+  },
+  "codeInputMsg": "Saisissez le code de \n confirmation",
+    "@signOut": {
+        "description": ""
+  },
+  "codeConfiMsg": "Entrez le code à 6 chiffre que nous avons envoyé à",
+    "@signOut": {
+        "description": ""
+  },
+  "waitMsg": "En attente de confirmation 00 :",
+    "@signOut": {
+        "description": ""
+  },
+  "btnConfirm": "Confirmer",
+    "@signOut": {
+        "description": ""
+  },
+  "incorrectCodeMsg": "Code incorrect!",
+    "@signOut": {
+        "description": ""
+  },
+  "errorProduit": "Une erreur s'est produite!",
+    "@signOut": {
+        "description": ""
+  },
+  "aboutInfo": "MoMo Epargne est une application qui permet aux clients d’épargner de l’argent sur leur compte d’épargne Momo.
+                Plutôt que les clients laissent leur économie sur leur compte Momo où ils risquent de faire des dépenses non contrôlées, Momo Épargne leur donne la possibilité d’épargner leur argent qu’ils jugent utiliser plus tard, pour financer des projets personnels; anticiper les dépenses imprévues, etc.",
+    "@signOut": {
+        "description": ""
   }
 }

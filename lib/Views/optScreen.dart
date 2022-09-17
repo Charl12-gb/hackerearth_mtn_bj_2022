@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_verification_code/flutter_verification_code.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/components/components.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uiblock/uiblock.dart';
 
 import '../controllers/firebase_core.dart';
@@ -34,16 +35,16 @@ class _OPTScreenState extends State<OPTScreen> {
           child: Column(
             children: [
               const Spacer(flex: 4,),
-              const Text(
-                "Saisissez le code de \n confirmation",
+              Text(
+                AppLocalizations.of(context)!.codeInputMsg,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontWeight: FontWeight.w700,
                     color: AppColor.textColor1,
                     fontSize: 22),
               ),
-              const Text(
-                "Entrez le code à 5 chiffre que nous avons envoyé à",
+              Text(
+                AppLocalizations.of(context)!.codeConfiMsg,
                 textAlign: TextAlign.center,
                 style: TextStyle(color: AppColor.textColor2),
               ),
@@ -64,13 +65,13 @@ class _OPTScreenState extends State<OPTScreen> {
               TweenAnimationBuilder(
                 tween: Tween(begin: 30.0 , end: 0),
                 duration: const Duration(seconds: 30),
-                builder: (context, sec, child) => Text("En attente de confirmation 00 : ${ num.parse(sec.toString()).toInt() }") ,
+                builder: (context, sec, child) => Text("Waiting for confirmation 00 : ${ num.parse(sec.toString()).toInt() }") ,
               ),
 
               const Spacer(flex: 1,),
               appButton(
                 onPressed: _code.length < 6 ? () => {} : () { verify(); },
-                text: "Confirmer" , backgroundColor: AppColor.primaryColor,
+                text: AppLocalizations.of(context)!.btnConfirm , backgroundColor: AppColor.primaryColor,
               ),
               const Spacer(flex: 5,),
             ],
@@ -91,12 +92,12 @@ class _OPTScreenState extends State<OPTScreen> {
         return;
       }
       await Future(() => UIBlock.unblock(context));
-      Future(() => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Code incorrect!"),behavior: SnackBarBehavior.floating)));
+      Future(() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.incorrectCodeMsg),behavior: SnackBarBehavior.floating)));
     }).onError((error, stackTrace) {
       debugPrint(error.toString());
       debugPrintStack(stackTrace: stackTrace);
       UIBlock.unblock(context);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Une erreur s'est produite!"),behavior: SnackBarBehavior.floating));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorProduit),behavior: SnackBarBehavior.floating));
     });
   }
 }
@@ -113,11 +114,11 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Form(
       child: Column(
-        children: const [
+        children: [
           TextField(
             keyboardType: TextInputType.phone,
             decoration: InputDecoration(
-              hintText: "Numero de Téléphone",
+              hintText: AppLocalizations.of(context)!.phoneNumber,
             ),
           )
         ],
