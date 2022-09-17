@@ -46,8 +46,16 @@ class _MyAppState extends State<MyApp> {
       initial: widget.savedThemeMode ?? AdaptiveThemeMode.system,
       builder: (theme, darkTheme) => MaterialApp(
         title: AppLocalizations.of(context)?.appName??"Momo Epargne",
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: const [
+          AppLocalizations.delegate, // Add this line
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('en', ''), // English, no country code
+          Locale('fr', ''), // Spanish, no country code
+        ],
         debugShowCheckedModeBanner: false,
         theme: theme,
         darkTheme: darkTheme,
