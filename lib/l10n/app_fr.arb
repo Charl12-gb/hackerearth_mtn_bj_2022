@@ -1,0 +1,115 @@
+{
+  "@@locale": "fr",
+  "appName": "Momo Epargne",
+  "@appName": {
+    "description": "Le nom de l'application"
+  },
+  "myAccount": "Mon Compte",
+  "@myAccount": {
+    "description": ""
+  },
+  "momoBalance": "Solde Mobile money",
+  "@momoBalance": {
+    "description": "Solde Mobile Money de l'utilisateur"
+  },
+  "yourAccount": "Vos Comptes",
+  "@yourAccount": {
+    "description": "Comptes Momo Epargne de l'utilisateur"
+  },
+  "add": "Ajouter",
+  "@add": {
+    "description": ""
+  },
+  "momoThriftBalance": "Solde Momo Epargne",
+  "@momoThrift": {
+    "description": ""
+  },
+  "availableWithdraw": "{count, plural, zero{Aucun retrait disponible} one{1 retrait disponible} other{{count} retraits disponiblent}}",
+  "@availableWithdraw": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "transactions": "Transactions",
+  "@transactions": {
+    "description": ""
+  },
+  "noTransactions": "Aucune transaction",
+  "@noTransactions": {
+    "description": ""
+  },
+  "welcomeTo": "Bienvenue sur Momo Epargne",
+  "@welcomeTo": {
+    "description": ""
+  },
+  "welcomeToAddNumInfo": "Entrez votre numero de téléphone pour vous authentifier à Momo Epargne",
+  "@welcomeToAddNumInfo": {
+    "description": ""
+  },
+  "confirm": "Confirmer",
+  "@confirm": {
+    "description": ""
+  },
+  "invalidPhoneNumber": "Numéro de téléphone invalide!",
+  "@invalidPhoneNumber": {
+    "description": ""
+  },
+  "verificationFailed": "Echec de vérification!",
+  "@verificationFailed": {
+    "description": ""
+  },
+  "errorOccur": "Une erreur s'est produite!",
+  "@errorOccur": {
+    "description": ""
+  },
+  "phoneNumber": "Numero de Téléphone",
+  "@phoneNumber": {
+    "description": ""
+  },
+  "close": "Fermer",
+  "@close": {
+    "description": ""
+  },
+  "settings": "Paramètres",
+  "@settings": {
+    "description": ""
+  },
+  "account": "Compte",
+  "@account": {
+    "description": ""
+  },
+  "language": "Langue",
+  "@language": {
+    "description": ""
+  },
+  "english": "Anglais",
+  "@english": {
+    "description": ""
+  },
+  "french": "Français",
+  "@french": {
+    "description": ""
+  },
+  "darkMode": "Mode sombre",
+  "@darkMode": {
+    "description": ""
+  },
+  "lightMode": "Mode clair",
+  "@lightMode": {
+    "description": ""
+  },
+  "about": "A propos",
+  "@about": {
+    "description": ""
+  },
+  "system": "Système",
+  "@system": {
+    "description": ""
+  },
+  "signOut": "Se déconnecter",
+  "@signOut": {
+    "description": ""
+  }
+}

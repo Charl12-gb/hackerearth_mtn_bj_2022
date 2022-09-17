@@ -3,11 +3,9 @@ import 'package:hackerearth_mtn_bj_2022/Views/components/components.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/optScreen.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/firebase_core.dart';
-import 'package:hackerearth_mtn_bj_2022/models/models.dart';
-import 'package:username_gen/username_gen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:uiblock/uiblock.dart';
 
-import '../controllers/momoapi/collection.dart';
 import '../controllers/utils/utils.dart';
 
 class Login extends StatefulWidget {
@@ -23,6 +21,7 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
+    super.initState();
   }
 
   @override
@@ -37,16 +36,16 @@ class _LoginState extends State<Login> {
               const Spacer(
                 flex: 10,
               ),
-              const Text(
-                "Bienvenu sur Momo Epargne",
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.welcomeTo,
+                style: const TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.w600,
                     color: AppColor.textColor1
                     ),
               ),
               const Spacer(),
-              const Text("Entrez votre numero de téléphone pour vous authentifier \nà notre application MTN Challenge"),
+              Text(AppLocalizations.of(context)!.welcomeToAddNumInfo),
               const Spacer(),
               // INPUT Field
               LoginForm(phoneNumberFieldController: _phoneNumberFieldController),
@@ -56,7 +55,7 @@ class _LoginState extends State<Login> {
                   onPressed: () async {
                     await login();
                   },
-                text: "Confirmer",
+                text: AppLocalizations.of(context)!.confirm,
                 backgroundColor: AppColor.primaryColor
               ),
               const Spacer(
@@ -77,7 +76,7 @@ class _LoginState extends State<Login> {
 
     if(!isValidPhoneNumber){
       await Future(() => UIBlock.unblock(context));
-      Future(() => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Numéro de téléphone invalide!"),behavior: SnackBarBehavior.floating,)));
+      Future(() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.invalidPhoneNumber),behavior: SnackBarBehavior.floating,)));
       return;
     }
 
@@ -94,12 +93,12 @@ class _LoginState extends State<Login> {
       ))));
     }, verificationFailed: (e){
       UIBlock.unblock(context);
-      Future(() => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Echec de vérification!"),behavior: SnackBarBehavior.floating)));
+      Future(() => ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.verificationFailed),behavior: SnackBarBehavior.floating)));
     }).onError((error, stackTrace) {
       UIBlock.unblock(context);
       debugPrint(error.toString());
       debugPrintStack(stackTrace: stackTrace);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Une erreur s'est produite!"),behavior: SnackBarBehavior.floating));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorOccur),behavior: SnackBarBehavior.floating));
     });
   }
 }
@@ -121,9 +120,9 @@ class _LoginFormState extends State<LoginForm> {
           TextField(
             controller: widget.phoneNumberFieldController,
             keyboardType: TextInputType.phone,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               prefixText: "+229 ",
-              hintText: "Numero de Téléphone",
+              hintText: AppLocalizations.of(context)!.phoneNumber,
             ),
           )
         ],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/accueil.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/historique.dart';
+import 'package:hackerearth_mtn_bj_2022/Views/setttings.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/firebase_core.dart';
 
@@ -15,7 +16,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   final List screens = [
     const Accueil(),
-    const Historique()
+    const Historique(),
+    const Settings()
   ];
 
   int _currentIndex = 0;
@@ -49,6 +51,7 @@ class _HomeState extends State<Home> {
         items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home) , label: ''),
             BottomNavigationBarItem(icon: Icon(Icons.history_edu) ,label: ''),
+            BottomNavigationBarItem(icon: Icon(Icons.settings) ,label: ''),
         ],
       ),
     );

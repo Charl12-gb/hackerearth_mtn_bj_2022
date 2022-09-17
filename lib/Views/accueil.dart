@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/new_sous_compte.dart';
 import 'package:hackerearth_mtn_bj_2022/colors.dart';
 import 'package:hackerearth_mtn_bj_2022/models/models.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../controllers/firebase_core.dart';
 import '../controllers/utils/pagination/paginate_firestore.dart';
@@ -28,7 +29,7 @@ class _AccueilState extends State<Accueil> {
     await FirebaseCore.instance.ensureInitialized();
     FirebaseCore.instance.runTransactionsChecker();
     username = FirebaseCore.instance.currentUser?.name??"";
-    setState(() {},);
+    if(mounted){setState(() {},);}
   }
 
   @override
@@ -42,7 +43,7 @@ class _AccueilState extends State<Accueil> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Mon compte', style: TextStyle(color: Theme.of(context).textTheme.bodyText2?.color),),
+        title: Text(AppLocalizations.of(context)!.myAccount, style: TextStyle(color: Theme.of(context).textTheme.bodyText2?.color),),
         elevation: 0,
       ),
       body:Container(
@@ -82,7 +83,7 @@ class _AccueilState extends State<Accueil> {
             height: 25,
           ),
           Text(username, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-          const Text("Solde Mobile money", style: TextStyle(fontSize: 15),),
+          Text(AppLocalizations.of(context)!.momoBalance, style: const TextStyle(fontSize: 15),),
           Text(
             "$momoBalance $currency",
             style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12),
@@ -99,12 +100,12 @@ class _AccueilState extends State<Accueil> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Vos comptes',),
+                Text(AppLocalizations.of(context)!.yourAccount,),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, SousCompte.name);
                   },
-                  child: const Text("Ajouter"),
+                  child: Text(AppLocalizations.of(context)!.add),
                 ),
               ],
             ),
@@ -156,7 +157,7 @@ class BoardInfo extends StatelessWidget {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text("Solde Momo Epargne"),
+                            Text(AppLocalizations.of(context)!.momoThriftBalance),
                             Text(
                               "$totalBalance $currency",
                               style: const TextStyle(
@@ -173,7 +174,7 @@ class BoardInfo extends StatelessWidget {
                         colors: availableWithdraw > 0 ? Colors.green.withAlpha(50) : Colors.red.withAlpha(50),
                         radius: 10,
                       ),
-                      child: Text(" ${availableWithdraw.toString().length<=1? "$availableWithdraw" : availableWithdraw} retrait disponible"),
+                      child: Text(AppLocalizations.of(context)!.availableWithdraw(availableWithdraw)),
                     )
                   ],
                 );

@@ -1,0 +1,115 @@
+{
+  "@@locale": "en",
+  "appName": "Momo Epargne",
+  "@appName": {
+    "description": "The application name"
+  },
+  "myAccount": "My Account",
+  "@myAccount": {
+    "description": ""
+  },
+  "momoBalance": "Mobile money balance",
+  "@momoBalance": {
+    "description": "User's Mobile Money balance"
+  },
+  "yourAccount": "Your accounts",
+  "@yourAccount": {
+    "description": "Momo User Savings Accounts"
+  },
+  "add": "Add",
+  "@add": {
+    "description": ""
+  },
+  "momoThriftBalance": "Momo Epargne balance",
+  "@momoThrift": {
+    "description": ""
+  },
+  "availableWithdraw": "{count, plural, zero{No withdrawal available} one{1 withdrawal available} other{{count} withdrawals available}}",
+  "@availableWithdraw": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "transactions": "Transactions",
+  "@transactions": {
+    "description": ""
+  },
+  "noTransactions": "No transaction",
+  "@noTransactions": {
+    "description": ""
+  },
+  "welcomeTo": "Welcome to Momo Epargne",
+  "@welcomeTo": {
+    "description": ""
+  },
+  "welcomeToAddNumInfo": "Enter your phone number to authenticate with Momo Epargne",
+  "@welcomeToAddNumInfo": {
+    "description": ""
+  },
+  "confirm": "Confirm",
+  "@confirm": {
+    "description": ""
+  },
+  "invalidPhoneNumber": "Invalid phone number!",
+  "@invalidPhoneNumber": {
+    "description": ""
+  },
+  "verificationFailed": "Verification failed!",
+  "@verificationFailed": {
+    "description": ""
+  },
+  "errorOccur": "An error has occurred!",
+  "@errorOccur": {
+    "description": ""
+  },
+  "phoneNumber": "Phone number",
+  "@phoneNumber": {
+    "description": ""
+  },
+  "close": "Close",
+  "@close": {
+    "description": ""
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": ""
+  },
+  "account": "Account",
+  "@account": {
+    "description": ""
+  },
+  "language": "Language",
+  "@language": {
+    "description": ""
+  },
+  "english": "English",
+  "@english": {
+    "description": ""
+  },
+  "french": "French",
+  "@french": {
+    "description": ""
+  },
+  "darkMode": "Dark mode",
+  "@darkMode": {
+    "description": ""
+  },
+  "lightMode": "Light mode",
+  "@lightMode": {
+    "description": ""
+  },
+  "about": "About",
+  "@about": {
+    "description": ""
+  },
+  "system": "System",
+  "@system": {
+    "description": ""
+  },
+  "signOut": "Sign out",
+  "@signOut": {
+    "description": ""
+  }
+}
