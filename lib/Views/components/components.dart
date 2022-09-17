@@ -4,6 +4,8 @@ import 'package:hackerearth_mtn_bj_2022/colors.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/utils/extensions.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/utils/utils.dart';
 import 'package:hackerearth_mtn_bj_2022/models/models.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class appButton extends StatelessWidget {
   const appButton({
@@ -65,6 +67,37 @@ class SousCompteItem extends StatelessWidget {
               SizedBox(
                 width: size.width/2 - 30,
                 child: Text(account.name, maxLines: 2, overflow: TextOverflow.ellipsis),
+              ),
+              InkWell(
+                onTap: (){
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return StatefulBuilder(builder: (context, setState) {
+                          return AlertDialog(
+                            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                            title: const Text("Description"),
+                            content: SingleChildScrollView(
+                              physics: const BouncingScrollPhysics(),
+                              child: Text(account.description),
+                            ),
+                            actions: [
+                              TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(AppLocalizations.of(context)!.close)),
+                            ],
+                          );
+                        },);
+                      });
+                },
+                child: const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: Icon(Icons.info_outline, size: 18),
+                ),
               ),
               SizedBox(
                 // width: size.width/2,
@@ -144,7 +177,7 @@ class SousCompteItem extends StatelessWidget {
                 ],
               ) :const Text("Opération en cours...", style: TextStyle(fontSize: 12, color: Colors.orange),)
             ],
-          )
+          ),
         ],
       ),
     );
