@@ -112,15 +112,15 @@
   "@signOut": {
     "description": ""
   },
-  "compteBeforeName": "Sous compte",
+  "compteBeforeName": "Comptes",
   "@compteBeforeName": {
     "description": ""
   },
-  "msgCreateCompte": "Crée un nouveau sous compte\n pour épargner",
+  "msgCreateCompte": "Crée un nouveau compte\n pour épargner",
   "@msgCreateCompte": {
     "description": ""
   },
-  "inputText": "Saisissez le nom du sous compte *",
+  "inputText": "Saisissez le nom du compte *",
   "@inputText": {
     "description": ""
   },
@@ -189,5 +189,26 @@
   "aboutInfo": "MoMo Epargne est une application qui permet aux clients d’épargner de l’argent sur leur compte d’épargne Momo.Plutôt que les clients laissent leur économie sur leur compte Momo où ils risquent de faire des dépenses non contrôlées, Momo Épargne leur donne la possibilité d’épargner leur argent qu’ils jugent utiliser plus tard, pour financer des projets personnels; anticiper les dépenses imprévues, etc.",
   "@aboutInfo": {
     "description": ""
+  },
+  "depositPayeeNote": "Vous avez epargné sur votre compte: {accountName}",
+  "@depositPayeeNote": {
+    "placeholders": {
+      "accountName": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawalPayerNote": "Vous avez retirer {amount} CFA de votre compte: {accountName}",
+  "@withdrawalPayerNote": {
+    "placeholders": {
+      "accountName": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "double",
+        "format": "currency",
+        "example": "1000.00 CFA"
+      }
+    }
   }
 }

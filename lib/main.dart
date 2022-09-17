@@ -1,6 +1,5 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/login.dart';
@@ -8,8 +7,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hackerearth_mtn_bj_2022/routes.dart';
 
-import 'Views/home.dart';
 import 'Views/theme_provider.dart';
+import 'controllers/navigation_service.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -45,6 +44,7 @@ class _MyAppState extends State<MyApp> {
       dark: _themeProvider.darkThemeData(),
       initial: widget.savedThemeMode ?? AdaptiveThemeMode.system,
       builder: (theme, darkTheme) => MaterialApp(
+        navigatorKey: NavigationService.navigatorKey,
         title: AppLocalizations.of(context)?.appName??"Momo Epargne",
         localizationsDelegates: const [
           AppLocalizations.delegate, // Add this line
@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
         theme: theme,
         darkTheme: darkTheme,
         // themeMode: ThemeMode.system,
-        initialRoute: FirebaseAuth.instance.currentUser!=null?Home.name:Login.name,  //OPTScreen.name,
+        initialRoute: Login.name,  //OPTScreen.name,
         routes: Routes,
       ),
     );

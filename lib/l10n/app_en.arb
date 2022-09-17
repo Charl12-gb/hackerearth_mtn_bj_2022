@@ -112,15 +112,15 @@
   "@signOut": {
     "description": ""
   },
-  "compteBeforeName": "Under Account",
+  "compteBeforeName": "Account",
   "@compteBeforeName": {
     "description": ""
   },
-  "msgCreateCompte": "Create a new sub account\n to thrift",
+  "msgCreateCompte": "Create a new account\n to thrift",
   "@msgCreateCompte": {
     "description": ""
   },
-  "inputText": "Enter the name of the sub-account *",
+  "inputText": "Enter the name of the account *",
   "@inputText": {
     "description": ""
   },
@@ -190,5 +190,26 @@
   "aboutInfo": "MoMo Epargne is an application that allows customers to save money in their Momo savings account.Rather than customers leaving their savings in their Momo account where they risk making uncontrolled expenses, Momo Epargne gives them the possibility of saving their money which they consider to be used later, to finance personal projects; anticipating unforeseen expenses, etc.",
   "@aboutInfo": {
     "description": ""
+  },
+  "depositPayeeNote": "You have saved on your account: {accountName}",
+  "@depositPayeeNote": {
+    "placeholders": {
+      "accountName": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawalPayerNote": "You have withdrawn {amount} CFA from your account: {accountName}",
+  "@withdrawalPayerNote": {
+    "placeholders": {
+      "accountName": {
+        "type": "String"
+      },
+      "amount": {
+        "type": "double",
+        "format": "currency",
+        "example": "1000.00 CFA"
+      }
+    }
   }
 }
