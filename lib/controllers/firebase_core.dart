@@ -8,12 +8,10 @@ import 'package:hackerearth_mtn_bj_2022/controllers/utils/extensions.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/utils/utils.dart';
 import 'package:hackerearth_mtn_bj_2022/models/account.dart';
 import 'package:hackerearth_mtn_bj_2022/models/enums.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:hackerearth_mtn_bj_2022/models/models.dart' as models;
 import 'package:username_gen/username_gen.dart';
 import 'config.dart';
-import 'navigation_service.dart';
 
 /// Provides access to Firebase chat data. Singleton, use
 /// FirebaseChatCore.instance to access methods.
@@ -169,12 +167,14 @@ class FirebaseCore{
     switch(type){
       case TransactionType.deposit:
         client = Collection(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, collectionPrimaryKey: apiSettings?.collectionPrimaryKey, collectionUserId: apiSettings?.collectionUserId, collectionApiSecret: apiSettings?.collectionApiSecret, callbackUrl: apiSettings!.callbackHost);
-        var params = {'mobile': currentUser?.phoneNumber.substring("+229".length), 'payeeNote' : payeeNote??AppLocalizations.of(NavigationService.navigatorKey.currentContext!)!.depositPayeeNote(account.name), 'payerMessage' : payerMessage??account.description, 'externalId' : doc.id, 'currency' : apiSettings?.currency, 'amount' : amount};
+        var params = {'mobile': currentUser?.phoneNumber.substring("+229".length), 'payeeNote' :account.name, 'payerMessage' : account.description, 'externalId' : doc.id, 'currency' : apiSettings?.currency, 'amount' : amount};
         uuid = await client.requestToPay(params: params);
         break;
       case TransactionType.withdrawal:
         client = Disbursement(baseUrl: apiSettings!.baseUrl, targetEnvironment: apiSettings!.environment, currency: apiSettings!.currency, disbursementPrimaryKey: apiSettings?.disbursementPrimaryKey, disbursementUserId: apiSettings?.disbursementUserId, disbursementApiSecret: apiSettings?.disbursementApiSecret, callbackUrl: apiSettings!.callbackHost);
-        var params = {'mobile': currentUser?.phoneNumber.substring("+229".length), 'payeeNote' : payeeNote??AppLocalizations.of(NavigationService.navigatorKey.currentContext!)!.withdrawalPayerNote(account.name, amount), 'payerMessage' : payerMessage??account.description, 'externalId' : doc.id, 'currency' : apiSettings?.currency, 'amount' : amount};
+        // var params = {'mobile': currentUser?.phoneNumber.substring("+229".length), 'payeeNote' : payeeNote??AppLocalizations.of(NavigationService.navigatorKey.currentContext!)!.withdrawalPayerNote(account.name, amount), 'payerMessage' : account.name, 'externalId' : doc.id, 'currency' : apiSettings?.currency, 'amount' : amount};
+        var params = {'mobile': currentUser?.phoneNumber.substring("+229".length), 'payeeNote' :account.name, 'payerMessage' : account.description, 'externalId' : doc.id, 'currency' : apiSettings?.currency, 'amount' : amount};
+        print(params);
         uuid = await client.transfer(params: params);
         break;
     }
@@ -332,7 +332,7 @@ class FirebaseCore{
   }
 
   ///Get ApiSettings
-  Future<models.ApiSettings> getApiSetting() async {
+  Future<models.ApiSettings> getApiSetting({bool forceRenew = false}) async {
     authCheck();
     var query = await getFirebaseFirestore().collection(config.apiSettingCollectionName).limit(1).get();
     if(query.docs.isEmpty)throw Exception("No Found");
@@ -340,14 +340,14 @@ class FirebaseCore{
     models.ApiSettings apiSettings = models.ApiSettings.fromMap(processSimpleDocument(query.docs.first));
 
     bool processUpdate = false;
-    if(apiSettings.collectionUserId.isEmpty){
+    if(apiSettings.collectionUserId.isEmpty || forceRenew){
       var c = Collection(baseUrl: apiSettings.baseUrl, targetEnvironment: apiSettings.environment, currency: apiSettings.currency, collectionPrimaryKey: apiSettings.collectionPrimaryKey, collectionUserId: apiSettings.collectionUserId, collectionApiSecret: apiSettings.collectionApiSecret, callbackUrl: apiSettings.callbackHost);
       var u = await c.createUser();
       apiSettings = apiSettings.copyWith(collectionUserId: u.uuid, collectionApiSecret: u.apiKey);
       processUpdate = true;
     }
 
-    if(apiSettings.disbursementUserId.isEmpty){
+    if(apiSettings.disbursementUserId.isEmpty || forceRenew){
       var c = Disbursement(baseUrl: apiSettings.baseUrl, targetEnvironment: apiSettings.environment, currency: apiSettings.currency, disbursementPrimaryKey: apiSettings.disbursementPrimaryKey, disbursementUserId: apiSettings.disbursementUserId, disbursementApiSecret: apiSettings.disbursementApiSecret, callbackUrl: apiSettings.callbackHost);
       var u = await c.createUser();
       apiSettings = apiSettings.copyWith(disbursementUserId: u.uuid, disbursementApiSecret: u.apiKey);

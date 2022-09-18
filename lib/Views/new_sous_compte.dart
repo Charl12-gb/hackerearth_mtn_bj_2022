@@ -35,18 +35,18 @@ class SousCompte extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Text(
                       AppLocalizations.of(context)!.msgCreateCompte,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    SousCompteForm(),
+                    const SousCompteForm(),
                   ],
                 ),
               ),
@@ -173,13 +173,13 @@ class _SousCompteFormState extends State<SousCompteForm> {
             const SizedBox(
               height: 5,
             ),
-            Text(AppLocalizations.of(context)!.amountDesc(200), style: const TextStyle(fontSize: 10),),
+            Text(AppLocalizations.of(context)!.amountDesc(200.toString()), style: const TextStyle(fontSize: 10),),
           ],
         ),
         const SizedBox(
           height: 20,
         ),
-        appButton(
+        AppButton(
             onPressed: () {
               createSousCompte();
             },

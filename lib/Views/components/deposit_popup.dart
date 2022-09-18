@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/controllers/utils/extensions.dart';
 import 'package:hackerearth_mtn_bj_2022/models/models.dart';
 import 'package:uiblock/uiblock.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../colors.dart';
 import '../../controllers/firebase_core.dart';
@@ -21,18 +22,18 @@ class DepositPopup {
 
       var d = double.tryParse(amount);
       if(d==null || d<minimumSold){
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Montant invalide"), behavior: SnackBarBehavior.floating,));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.invalidAmount), behavior: SnackBarBehavior.floating,));
         return;
       }
       UIBlock.block(context);
       await FirebaseCore.instance.createTransaction(account: account, amount: d, type: TransactionType.deposit).then((value) async {
         UIBlock.unblock(context);
-        var s = await DepositPopup.handleTransactionStatus(context,{"transaction":value});
+        await DepositPopup.handleTransactionStatus(context,{"transaction":value});
       }).onError((error, stackTrace){
         debugPrint(error.toString());
         debugPrintStack(stackTrace: stackTrace);
         UIBlock.unblock(context);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Une erreur est survenue!"), behavior: SnackBarBehavior.floating,));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.invalidAmount), behavior: SnackBarBehavior.floating,));
       });
     }
 
@@ -43,13 +44,13 @@ class DepositPopup {
             return AlertDialog(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              title: const Text("Dépôt", style: TextStyle(fontSize: 20),),
+              title: Text(AppLocalizations.of(context)!.deposit, style: const TextStyle(fontSize: 20),),
               content: ConstrainedBox(
                   constraints: const BoxConstraints(maxHeight: 200),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text("Montant *"),
+                    Text(AppLocalizations.of(context)!.montantText),
                     const SizedBox(
                       height: 8,
                     ),
@@ -64,15 +65,15 @@ class DepositPopup {
                     const SizedBox(
                       height: 5,
                     ),
-                    Text("Montant minimum $minimumSold CFA", style: const TextStyle(fontSize: 10),),
+                    Text(AppLocalizations.of(context)!.requiredAmount(minimumSold.toString()), style: const TextStyle(fontSize: 10),),
                     const SizedBox(
                       height: 20,
                     ),
-                    appButton(
+                    AppButton(
                         onPressed: () {
                           createTransaction().whenComplete(() => Navigator.of(context).pop());
                         },
-                        text: "soumettre",
+                        text: AppLocalizations.of(context)!.sendForm,
                         backgroundColor: AppColor.primaryColor
                     )
                   ],
@@ -98,12 +99,12 @@ class DepositPopup {
       await FirebaseCore.instance.createTransaction(account: account, amount: available, type: TransactionType.withdrawal).then((value) async {
         Future.delayed(const Duration(seconds: 10),() => FirebaseCore.instance.runTransactionsChecker());
         UIBlock.unblock(context);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Demande de retrait en attente!"), behavior: SnackBarBehavior.floating,));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.pendingWithdrawalRequest), behavior: SnackBarBehavior.floating,));
       }).onError((error, stackTrace){
         debugPrint(error.toString());
         debugPrintStack(stackTrace: stackTrace);
         UIBlock.unblock(context);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Une erreur est survenue!"), behavior: SnackBarBehavior.floating,));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppLocalizations.of(context)!.errorOccur), behavior: SnackBarBehavior.floating,));
       });
     }
 
@@ -114,38 +115,38 @@ class DepositPopup {
             return AlertDialog(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              title: const Text("Souhaitez-vous retirer votre epargne?", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+              title: Text(AppLocalizations.of(context)!.wantToWithdrawal, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
               content: ConstrainedBox(
                   constraints: const BoxConstraints(maxHeight: 250),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Solde: ${account.balance} CFA",
+                      AppLocalizations.of(context)!.formattedBalance(account.balance.toString()),
                       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 10,),
                     Text(
-                      "Pénalité: ${applyPenalty?penalty:0}%",
+                      AppLocalizations.of(context)!.formattedPenalty(applyPenalty?penalty.toString():"0"),
                       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "* $penalty% de pénalité est appliquée aux retraits avant la date de fin d'epargne.",
+                      AppLocalizations.of(context)!.penaltyInfo(penalty.toString()),
                       style: const TextStyle(fontSize: 12),
                     ),
                     const SizedBox(height: 10,),
                     Text(
-                      "Disponible: $available CFA",
+                      AppLocalizations.of(context)!.availableAmount(available.toString()),
                       style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    appButton(
+                    AppButton(
                         onPressed: () {
                           createTransaction().whenComplete(() => Navigator.of(context).pop());
                         },
-                        text: "continuer ->",
+                        text: AppLocalizations.of(context)!.continueBtn,
                         backgroundColor: AppColor.primaryColor
                     )
                   ],
@@ -180,9 +181,9 @@ class DepositPopup {
             i = true;
           }
           return AlertDialog(
-            title: const Text(
-              "En attente de validation",
-              style: TextStyle(fontSize: 15),
+            title: Text(
+              AppLocalizations.of(context)!.awaitValidation,
+              style: const TextStyle(fontSize: 15),
             ),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -203,7 +204,7 @@ class DepositPopup {
                   const SizedBox(
                     height: 15,
                   ),
-                  const Text("Veuillez ne pas quitter l'application", style: TextStyle(fontSize: 12)),
+                  Text(AppLocalizations.of(context)!.doNotExitApp, style: const TextStyle(fontSize: 12)),
                 ],
               ),
             ),

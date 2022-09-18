@@ -140,9 +140,7 @@
   "@amountDesc": {
     "placeholders": {
       "minimumSold": {
-        "type": "double",
-        "format": "currency",
-        "example": "1000.00 CFA"
+        "type": "String"
       }
     }
   },
@@ -205,10 +203,98 @@
         "type": "String"
       },
       "amount": {
-        "type": "double",
-        "format": "currency",
-        "example": "1000.00 CFA"
+        "type": "String"
       }
     }
-  }
+  },
+  "invalidAmount": "Montant invalide",
+  "@invalidAmount": {
+    "description": ""
+  },
+  "deposit": "Dépôt",
+  "@deposit": {
+    "description": ""
+  },
+  "sendForm": "soumettre",
+  "@sendForm": {
+    "description": ""
+  },
+  "pendingWithdrawalRequest": "Demande de retrait en attente!",
+  "@pendingWithdrawalRequest": {
+    "description": ""
+  },
+  "wantToWithdrawal": "Souhaitez-vous retirer votre epargne?",
+  "@wantToWithdrawal": {
+    "description": ""
+  },
+  "formattedBalance": "Solde: {balance} CFA",
+  "@formattedBalance": {
+    "placeholders": {
+      "balance": {
+        "type": "String"
+      }
+    }
+  },
+  "formattedPenalty": "Pénalité: {penalty}%",
+  "@formattedPenalty": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "penaltyInfo": "* {penalty}% de pénalité est appliquée aux retraits avant la date de fin d'epargne.",
+  "@penaltyInfo": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "availableAmount": "Disponible: {available} CFA",
+  "@availableAmount": {
+    "placeholders": {
+      "available": {
+        "type": "String"
+      }
+    }
+  },
+  "continueBtn": "continuer ->",
+  "@continueBtn": {},
+  "awaitValidation": "En attente de validation",
+  "@awaitValidation": {},
+  "doNotExitApp": "Veuillez ne pas quitter l'application",
+  "@doNotExitApp": {},
+  "requiredAmount": "Montant minimum {minimumSold} CFA",
+  "@requiredAmount": {
+    "placeholders": {
+      "minimumSold": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawalBtn": "Retirer",
+  "@withdrawalBtn": {},
+  "depositBtn": "Ajouter",
+  "@depositBtn": {},
+  "operationInProgress": "Opération en cours...",
+  "@operationInProgress": {},
+  "description": "Description",
+  "@description": {},
+  "month": "mois",
+  "@month": {},
+  "year": "ans",
+  "@year": {},
+  "pending": "en attente",
+  "@pending": {},
+  "successful": "succès",
+  "@successful": {},
+  "failed": "échec",
+  "@failed": {},
+  "rejected": "rejetée",
+  "@rejected": {},
+  "timeout": "expirée",
+  "@timeout": {},
+  "savingPeriod": "Période d'epargne",
+  "@savingPeriod": {}
 }

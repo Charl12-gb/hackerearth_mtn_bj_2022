@@ -50,7 +50,7 @@ class _LoginState extends State<Login> {
               LoginForm(phoneNumberFieldController: _phoneNumberFieldController),
               const Spacer(),
               // BTN
-              appButton(
+              AppButton(
                   onPressed: () async {
                     await login();
                   },

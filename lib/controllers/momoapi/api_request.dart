@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hackerearth_mtn_bj_2022/controllers/firebase_core.dart';
 import 'package:hackerearth_mtn_bj_2022/models/models.dart';
 
 import 'error/authentication.dart';
@@ -53,6 +54,9 @@ class ApiRequest {
         }
         return response;
       }on DioError catch (_){
+        if(_.response?.statusCode==401){
+          FirebaseCore.instance.getApiSetting(forceRenew: true);
+        }
         debugPrint(_.response?.data.toString());
         debugPrint(_.response?.realUri.toString());
         throw Exception(_.toString());

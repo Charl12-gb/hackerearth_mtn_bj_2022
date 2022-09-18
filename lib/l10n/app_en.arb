@@ -128,7 +128,7 @@
   "@placeName": {
     "description": ""
   },
-  "dateText": "Période d'épargne *",
+  "dateText": "Saving duration *",
   "@dateText": {
     "description": ""
   },
@@ -141,9 +141,7 @@
     "description": "",
     "placeholders": {
       "minimumSold": {
-        "type": "double",
-        "format": "currency",
-        "example": "1000.00 CFA"
+        "type": "String"
       }
     }
   },
@@ -206,10 +204,98 @@
         "type": "String"
       },
       "amount": {
-        "type": "double",
-        "format": "currency",
-        "example": "1000.00 CFA"
+        "type": "String"
       }
     }
-  }
+  },
+  "invalidAmount": "Invalid amount",
+  "@invalidAmount": {
+    "description": ""
+  },
+  "deposit": "Deposit",
+  "@deposit": {
+    "description": ""
+  },
+  "sendForm": "submit",
+  "@sendForm": {
+    "description": ""
+  },
+  "pendingWithdrawalRequest": "Withdrawal request pending!",
+  "@pendingWithdrawalRequest": {
+    "description": ""
+  },
+  "wantToWithdrawal": "Want to withdraw your savings?",
+  "@wantToWithdrawal": {
+    "description": ""
+  },
+  "formattedBalance": "Balance: {balance} CFA",
+  "@formattedBalance": {
+    "placeholders": {
+      "balance": {
+        "type": "String"
+      }
+    }
+  },
+  "formattedPenalty": "Penalty: {penalty}%",
+  "@formattedPenalty": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "penaltyInfo": "* {penalty}% de penalty is applied to withdrawals before the savings end date.",
+  "@penaltyInfo": {
+    "placeholders": {
+      "penalty": {
+        "type": "String"
+      }
+    }
+  },
+  "availableAmount": "Available: {available} CFA",
+  "@availableAmount": {
+    "placeholders": {
+      "available": {
+        "type": "String"
+      }
+    }
+  },
+  "continueBtn": "continue ->",
+  "@continueBtn": {},
+  "awaitValidation": "Waiting for validation",
+  "@awaitValidation": {},
+  "doNotExitApp": "Please don't leave the application.",
+  "@doNotExitApp": {},
+  "requiredAmount": "Minimum amount {minimumSold} CFA",
+  "@requiredAmount": {
+    "placeholders": {
+      "minimumSold": {
+        "type": "String"
+      }
+    }
+  },
+  "withdrawalBtn": "Withdraw",
+  "@withdrawalBtn": {},
+  "depositBtn": "Add",
+  "@depositBtn": {},
+  "operationInProgress": "Operation in progress...",
+  "@operationInProgress": {},
+  "description": "Description",
+  "@description": {},
+  "month": "month",
+  "@month": {},
+  "year": "year",
+  "@year": {},
+  "pending": "pending",
+  "@pending": {},
+  "successful": "success",
+  "@successful": {},
+  "failed": "failed",
+  "@failed": {},
+  "rejected": "rejected",
+  "@rejected": {},
+  "timeout": "timeout",
+  "@timeout": {},
+  "savingPeriod": "Saving period",
+  "@savingPeriod": {}
 }

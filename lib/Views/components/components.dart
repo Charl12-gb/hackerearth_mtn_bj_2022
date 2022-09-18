@@ -7,15 +7,15 @@ import 'package:hackerearth_mtn_bj_2022/models/models.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
-class appButton extends StatelessWidget {
-  const appButton({
+class AppButton extends StatelessWidget {
+  const AppButton({
     Key? key,
     required this.onPressed,
-    this.text,
+    required this.text,
     required this.backgroundColor,
   }) : super(key: key);
 
-  final text;
+  final String text;
   final Color backgroundColor;
   final void Function()? onPressed;
 
@@ -30,7 +30,7 @@ class appButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12)), // foreground
             backgroundColor: backgroundColor), //AppColor.primaryColor
         onPressed: onPressed,
-        child: Text(text, style: TextStyle(color: AppColor.textColor2),),
+        child: Text(text, style: const TextStyle(color: AppColor.textColor2),),
       ),
     );
   }
@@ -77,7 +77,7 @@ class SousCompteItem extends StatelessWidget {
                           return AlertDialog(
                             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                            title: const Text("Description"),
+                            title: Text( AppLocalizations.of(context)!.description),
                             content: SingleChildScrollView(
                               physics: const BouncingScrollPhysics(),
                               child: Text(account.description),
@@ -128,7 +128,7 @@ class SousCompteItem extends StatelessWidget {
                 child: Row(
                   children: [
                     Text(
-                      "Solde: ${account.balance}$devise",
+                      AppLocalizations.of(context)!.formattedBalance(account.balance.toString()),
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     )
                   ],
@@ -145,9 +145,9 @@ class SousCompteItem extends StatelessWidget {
                       padding: const EdgeInsets.all(4),
                       decoration:
                           simpleDecoration(colors: available? Colors.green : Colors.red, radius: 4),
-                      child: const Text(
-                        'Rétirer',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.withdrawalBtn,
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 10,
                             fontWeight: FontWeight.w700),
@@ -165,9 +165,9 @@ class SousCompteItem extends StatelessWidget {
                       padding: const EdgeInsets.all(4),
                       decoration:
                           simpleDecoration(colors: Colors.blue, radius: 4),
-                      child: const Text(
-                        'Déposer',
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context)!.depositBtn,
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 10,
                             fontWeight: FontWeight.w700),
@@ -175,7 +175,7 @@ class SousCompteItem extends StatelessWidget {
                     ),
                   )
                 ],
-              ) :const Text("Opération en cours...", style: TextStyle(fontSize: 12, color: Colors.orange),)
+              ) :Text(AppLocalizations.of(context)!.operationInProgress, style: const TextStyle(fontSize: 12, color: Colors.orange),)
             ],
           ),
         ],
@@ -187,13 +187,13 @@ class SousCompteItem extends StatelessWidget {
 class SousCompteLine extends StatelessWidget {
   const SousCompteLine({
     Key? key,
-    required this.couleur,
+    required this.color,
     required this.text,
     required this.icon,
     this.onPressed,
   }) : super(key: key);
 
-  final Color couleur;
+  final Color color;
   final String text;
   final IconData icon;
   final void Function()? onPressed;
@@ -206,25 +206,25 @@ class SousCompteLine extends StatelessWidget {
         Text(
           text,
           style: TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w700, color: couleur),
+              fontSize: 16, fontWeight: FontWeight.w700, color: color),
         ),
         ElevatedButton(
             onPressed: onPressed,
-            child: Text("Ajouter"),
+            child: Text(AppLocalizations.of(context)!.add),
         ),
       ],
     );
   }
 }
 
-class roundedIcon extends StatelessWidget {
-  const roundedIcon({
+class RoundedIcon extends StatelessWidget {
+  const RoundedIcon({
     Key? key,
-    required this.couleur,
+    required this.color,
     required this.icon,
   }) : super(key: key);
 
-  final Color couleur;
+  final Color color;
   final IconData icon;
 
   @override
@@ -232,9 +232,9 @@ class roundedIcon extends StatelessWidget {
     return Container(
       height: 40,
       width: 40,
-      child: Center(child: Icon(icon)),
       decoration: BoxDecoration(
-          color: couleur, borderRadius: BorderRadius.circular(20)),
+          color: color, borderRadius: BorderRadius.circular(20)),
+      child: Center(child: Icon(icon)),
     );
   }
 }
@@ -245,8 +245,12 @@ class TransactionBuilder extends StatelessWidget {
   }) : super(key: key);
   final Transaction transaction;
 
-  String getTransInfo(){
-    return transaction.metadata?["additionalInfo"]["payeeNote"]??"Dépôt Momo Epargne sur votre compte Momo Epargne";
+  String getTransInfo(BuildContext context){
+    if(transaction.type==TransactionType.withdrawal){
+      return AppLocalizations.of(context)!.withdrawalPayerNote(transaction.metadata?["additionalInfo"]["payeeNote"], transaction.amount.toString());
+    }else {
+      return AppLocalizations.of(context)!.depositPayeeNote(transaction.metadata?["additionalInfo"]["payeeNote"]);
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -274,7 +278,7 @@ class TransactionBuilder extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  transaction.type==TransactionType.deposit?"Dépôt":"Retrait",
+                  transaction.type==TransactionType.deposit?AppLocalizations.of(context)!.deposit:AppLocalizations.of(context)!.withdrawalBtn,
                   style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600),
@@ -282,7 +286,7 @@ class TransactionBuilder extends StatelessWidget {
                 SizedBox(
                   width: size.width*2/3,
                   child: Text(
-                    getTransInfo(),
+                    getTransInfo(context),
                     maxLines: 3,
                     softWrap: false,
                     overflow: TextOverflow.ellipsis,
@@ -332,11 +336,11 @@ class TransactionBuilder extends StatelessWidget {
 var outlineInputBorder = OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             gapPadding: 15,
-            borderSide: BorderSide(color: AppColor.primaryColor)
+            borderSide: const BorderSide(color: AppColor.primaryColor)
           );
 
-class dotText extends StatelessWidget {
-  const dotText({
+class DotText extends StatelessWidget {
+  const DotText({
     Key? key,
     required this.dotColor,
     required this.text,
@@ -362,7 +366,7 @@ class dotText extends StatelessWidget {
             Text(text)
           ],
         ),
-        if (text2.length != 0) Text(text2)
+        if (text2.isNotEmpty) Text(text2)
       ],
     );
   }

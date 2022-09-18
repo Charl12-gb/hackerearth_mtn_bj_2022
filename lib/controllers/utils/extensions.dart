@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/models/models.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../navigation_service.dart';
 
 extension TransactionTypeExtension on TransactionType{
   String toShortString() {
@@ -22,19 +25,19 @@ extension ThriftDateExtension on ThriftDate{
   String toIntl(){
     switch(this){
       case ThriftDate.oneMonth:
-        return "1 mois";
+        return "1 ${AppLocalizations.of(NavigationService.navigatorKey.currentContext!)?.month}";
       case ThriftDate.threeMonth:
-        return "3 mois";
+        return "3 ${AppLocalizations.of(NavigationService.navigatorKey.currentContext!)?.month}";
       case ThriftDate.sixMonth:
-        return "6 mois";
+        return "6 ${AppLocalizations.of(NavigationService.navigatorKey.currentContext!)?.month}";
       case ThriftDate.nineYear:
-        return "9 mois";
+        return "9 ${AppLocalizations.of(NavigationService.navigatorKey.currentContext!)?.month}";
       case ThriftDate.oneYear:
-        return "1 ans";
+        return "1 ${AppLocalizations.of(NavigationService.navigatorKey.currentContext!)?.year}";
       case ThriftDate.twoYear:
-        return "2 ans";
+        return "2 ${AppLocalizations.of(NavigationService.navigatorKey.currentContext!)?.year}";
       case ThriftDate.threeYear:
-        return "3 ans";
+        return "3 ${AppLocalizations.of(NavigationService.navigatorKey.currentContext!)?.year}";
     }
   }
 
@@ -90,17 +93,17 @@ extension TransactionStatusExtension on TransactionStatus{
     switch(this){
 
       case TransactionStatus.pending:
-        return "en attente";
+        return AppLocalizations.of(NavigationService.navigatorKey.currentContext!)!.pending;
       case TransactionStatus.successful:
-        return "succès";
+        return AppLocalizations.of(NavigationService.navigatorKey.currentContext!)!.successful;
       case TransactionStatus.failed:
-        return "échec";
+        return AppLocalizations.of(NavigationService.navigatorKey.currentContext!)!.failed;
       case TransactionStatus.rejected:
-        return "rejetée";
+        return AppLocalizations.of(NavigationService.navigatorKey.currentContext!)!.rejected;
       case TransactionStatus.timeout:
-        return "expirée";
+        return AppLocalizations.of(NavigationService.navigatorKey.currentContext!)!.timeout;
       case TransactionStatus.ongoing:
-        return "en attente";
+        return AppLocalizations.of(NavigationService.navigatorKey.currentContext!)!.pending;
     }
   }
 

@@ -172,7 +172,7 @@ class BoardInfo extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        roundedIcon(couleur: Colors.black.withOpacity(0.2), icon: Icons.account_balance_wallet),
+                        RoundedIcon(color: Colors.black.withOpacity(0.2), icon: Icons.account_balance_wallet),
                         const SizedBox(
                           width: 10,
                         ),
