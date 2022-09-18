@@ -1,5 +1,6 @@
 import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hackerearth_mtn_bj_2022/Views/login.dart';
@@ -19,6 +20,7 @@ Future<void> main() async {
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: 'recaptcha-v3-site-key',
   );
+  await FirebaseAuth.instance.signOut();
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
 
   // initializeDateFormatting("fr_FR", null).then((value) => Intl.defaultLocale = 'fr');
@@ -62,7 +64,7 @@ class _MyAppState extends State<MyApp> {
         // themeMode: ThemeMode.system,
         initialRoute: Login.name,  //OPTScreen.name,
         routes: Routes,
-      ),
+      ), 
     );
   }
 }

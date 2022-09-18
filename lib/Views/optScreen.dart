@@ -68,7 +68,7 @@ class _OPTScreenState extends State<OPTScreen> {
               // ),
 
               const Spacer(flex: 1,),
-              appButton(
+              AppButton(
                 onPressed: _code.length < 6 ? () => {} : () { verify(); },
                 text: AppLocalizations.of(context)!.btnConfirm , backgroundColor: AppColor.primaryColor,
               ),
